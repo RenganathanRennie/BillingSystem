@@ -1,0 +1,285 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Hm.Admin.Helper;
+@model Hm.Admin.Models.Owner.SearchOwnerViewModel
+@{
+    ViewBag.Title = "Owner";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+    bool canCreate = Access.ToFunction("SM402", "A");
+    bool canRead = Access.ToFunction("SM402", "V");
+    bool canUpdate = Access.ToFunction("SM402", "M");
+    bool canDelete = Access.ToFunction("SM402", "D");
+}
+<style>
+    .owner_txt_box {
+        font-size: 12px;
+        color: #696969;
+        padding: 1px 5px;
+        margin: 0;
+        font-family: Trebuchet MS, Arial, Helvetica, Verdana, sans-serif;
+        border: 1px solid #ccc;
+        background: #fff;
+        width: 228px;
+    }
+
+    .owner_mobile_txt_box {
+        font-size: 12px;
+        color: #696969;
+        padding: 1px 5px;
+        margin: 0;
+        font-family: Trebuchet MS, Arial, Helvetica, Verdana, sans-serif;
+        border: 1px solid #ccc;
+        background: #fff;
+        width: 151px;
+        text-align: right;
+    }
+</style>
+<div class="content_body" align="center">
+    <div style="width: 1217px;" align="center">
+        <div style="padding-top: 10px; width: 966px;">
+            <div class="content_top">
+            </div>
+            <div id="contentmiddle" class="content_middle">
+                <div>
+                    <div class="sub_title">
+                        Owner Details
+                    </div>
+                    <div id="owner_index_form">
+                        @using (Html.BeginForm("Index", "SM402_Owner_list", FormMethod.Get))
+                        {
+                            <div style="border: solid 0px red;">
+                                <div class="common_control_bg" style="height: 61px;">
+                                    <div class="frm_title">
+                                        Filter:
+
+                                    </div>
+                                    <hr>
+                                    <div style="float: left; width: 780px; border: 0px solid blue;">
+                                        <div style="padding-left: 3px; padding-top: 5px;">
+                                            <div class="job_lbl_outer" style="width: 29px;">
+                                                <label title="Email">
+                                                    Email:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-left: 0px; height: 25px;">
+                                                @Html.TextBoxFor(model => model.Email, new { @class = "owner_txt_box custom_drop", title = "Email" })
+
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Email)
+                                            <div class="job_lbl_outer" style="width: 63px;">
+                                                <label title="First Name">
+                                                    First Name:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-left: 0px; height: 25px;">
+                                                @Html.TextBoxFor(model => model.FirstName, new { @class = "owner_txt_box custom_drop", title = "First Name" })
+                                            </div>
+
+
+
+                                            <div class="job_lbl_outer" style="width: 32px;">
+                                                <label title="Mobile Number">
+                                                    Mobile:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-left: 0px; height: 25px;">
+                                                @Html.TextBoxFor(model => model.MobileNumber, new { @class = "owner_mobile_txt_box custom_drop", title = "Mobile Number" })
+                                                @Html.ValidationMessageFor(model => model.MobileNumber)
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div style="float: right; padding-right: 3px; padding-top: 0px">
+                                        <div class="btn_left_outer">
+                                            <input type="submit" name="btn_Search" value="Search" id="btn_Search" title="Click to Search" class="button">
+                                        </div>
+                                        <div class="btn_right_outer">
+                                            <input type="submit" name="btn_Clear" value="Clear" id="btn_Clear" title="Click to Clear" class="button">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div id="divGrid" style="width: 920px; border: 0px solid red; margin-top: 5px;">
+
+                        <div class="grid_top_title">
+                            <div style="width: 100%">
+                                <div style="float: left; padding-top: 10px; padding-left: 10px; border: solid 0px red;
+                                            width: 12%;">
+                                    <div style="float: left;">
+                                        Owner Listings
+                                    </div>
+                                </div>
+                                <div style="float: right; padding-top: 10px; border: solid 0px red;
+                                            width: 8%;">
+                                    <div style="float: right; padding-right: 15px;">
+                                        <div id="divOpenOwner" class="update_popup">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="icon_lst">
+                                    <img src="/images/info-icon.png" title="Information" class="info_msg" onclick="OpenHelp('@Url.Action("PageHelp", "Common", new { pageName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() })')" />
+                                    <img src="/images/export-excel.png" title="Export To Excel" onclick="exportExcel()" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid_outer" id="grid">
+                            <div>
+                                <table cellspacing="0" cellpadding="15">
+                                    <tbody>
+                                        <tr class="grid_header">
+
+                                            @if (canUpdate)
+                                            {
+                                                <th class="ctrl_image" title="Edit"> Edit </th> }
+                                            @if (canDelete)
+                                            {
+                                                <th class="ctrl_image" title="Delete"> Del </th>}
+
+                                            <th title="Owner Code">
+                                                Owner Code
+                                            </th>
+                                            <th title="Full Name">
+                                                Full Name
+                                            </th>
+
+                                            <th title="Mobile Number">
+                                                Mobile Number
+                                            </th>
+                                            <th title="Email Id">
+                                                Email
+                                            </th>
+                                        </tr>
+                                        @foreach (var eachOwner in Model.OwnerData)
+                                        {
+                                            <tr>
+                                                @if (canUpdate)
+                                                {
+                                                    <td class="ctrl_image" title="Edit">
+                                                        <input type="image" src="~/images/icon-edit.gif" onclick="loadPartialUI('@Url.Action("Update", new { Id = @eachOwner.OwnerCD })', '#add_or_edit')">
+                                                    </td>
+                                                }
+                                                @if (canDelete)
+                                                {
+                                                    <td class="ctrl_image" title="Delete">
+                                                        <label data-url="@Url.Action("Delete")/@eachOwner.OwnerCD" id="Delete_link">          <input type="image" id="delete_btn" src="~/images/icon-delete.gif" /></label>
+                                                    </td>
+                                                }
+
+                                                <td title="Click to View">
+
+                                                    <a href="#" style="color:blue;text-underline-position:below;" onclick="loadPartialUI('@Url.Action("View", new { Id = @eachOwner.OwnerCD })', '#add_or_edit')"> <span>@eachOwner.OwnerCD </span> </a>
+                                                </td>
+                                                <td title="Full Name">
+                                                    <span>@eachOwner.FirstName @eachOwner.LastName</span>
+                                                </td>
+
+                                                <td style="text-align:right;" title="Mobile Number">
+                                                    <span>@eachOwner.Mobile</span>
+                                                </td>
+                                                <td title="Email Id">
+                                                    <a href="mailto:@eachOwner.Email" class="overrite_a">
+                                                        @eachOwner.Email
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div style="height: 5px">
+                        </div>
+                        <div id="divPaging">
+                            <div class="grid_bottom_paging">
+                                <div style=" float:left; padding-top: 0px; padding-left: 10px; border: solid 0px red;">
+                                    <div style="float: left;">
+                                        <div style="width: 700px; height: 25px; float: left; border: solid 0px red;">
+                                            @Html.PagedListPager(Model.OwnerData, page => Url.Action("Index", new { page, FirstName = Model.FirstName, Email = Model.Email }))
+                                        </div>
+                                        <div style="width: 206px; height: 25px; float: right; border: solid 0px red;">
+                                            <div style="float: right; padding-top: 5px;">
+
+                                                <span id="OwnerPaging_lblNoOfSites" class="grid_txtcolor">Showing @Model.PageTotal Owner(s) of @Model.TotalRecords</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="border: solid 0px red; text-align: left; padding-left: 15px; padding-top:2px; width: 907px; height:4px;">
+                                <span id="OwnerPaging_lblStatusMessage" class="ErrorStatus"></span>
+                            </div>
+
+                        </div>
+                        <input name="btnHidden" type="hidden" id="btnHidden">
+                        <div id="add_or_edit"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="content_bottom">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#grid #Delete_link").click(function () {
+        if (confirm('Do you wish to delete this')) {
+            var URL = $(this).attr("data-url");
+
+            $.ajax({
+                url: URL,
+                type: "post",
+                dataType: 'json',
+                data: '',
+                error: function (data) {
+
+                    alert("Some Error Occured Please Reload the page.")
+
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        alert('Deleted');
+                        window.location.reload();
+                    }
+                    else {
+                        alert('Error Occured');
+                    }
+
+                }
+            })
+
+        }
+    });
+    $(document).ready(function () {
+
+        var cacheEmail = {};
+        var cacheFirstName = {};
+        var cacheMobileNumber = {};
+        autoComplete("#Email", '@Url.Action("GetSuggestion", "Common")' + "?param=OwnerEmail", cacheEmail);
+        autoComplete("#FirstName", '@Url.Action("GetSuggestion", "Common")' + "?param=OwnerFirstName", cacheFirstName);
+        autoComplete("#MobileNumber", '@Url.Action("GetSuggestion", "Common")' + "?param=OwnerMobile", cacheMobileNumber);
+
+
+        $("#btn_Clear").click(function () {
+            $(':input', "#owner_index_form form")
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+        })       
+    });   
+</script>
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")
+

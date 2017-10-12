@@ -1,0 +1,355 @@
+﻿@model Hm.Admin.Models.User.UserViewModel
+@using Hm.Web.Framework.Extention;
+<style type="text/css">
+    .divTextbox {
+        width: auto !important;
+    }
+
+    .field-validation-error, .field-validation-error span {
+        padding-right: 0px;
+    }
+</style>
+
+    @using (Html.BeginForm( string.IsNullOrWhiteSpace(Model.UserId) ? "Create" : "Update", "SM420_User_list", FormMethod.Post, new { id = "user_form"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.UserId, new { @class = "popuproletxtbox create_or_update" })
+      
+                <div class="accessrgt_add">
+                    <div class="column_divid" id="prop_lst">
+
+                        @if (Model.UserId != null)
+                        {
+
+                            <div class="divfieldrightrow">
+
+                                <div class="popup_lbl_outer1">
+
+                                    <label title="User Code">
+                                        User ID
+                                    </label>
+                                </div>
+
+                                <div style="float: left;padding-left: 15px;margin-top: 10px;">
+                                    @Html.TextBoxFor(model => model.UserId, new { @class = "popuplbldisabled", disabled = "disabled", @readonly = "readonly", Title = "User Code" })
+                                    @Html.ValidationMessageFor(model => model.UserId)
+                                </div>
+
+                                <div style="padding-left: 70px; padding-top: 1px; margin-top: 10px; float: left; ">
+
+                                    @Html.CheckBoxFor(model => model.IsAvtive, new { Title = "Active" })
+
+                                </div>
+                                <div class="popup_lbl_outer" style="padding-top: 10px; padding-left: 5px; ">
+
+                                    <label title="Active">
+                                        Is Active
+                                    </label>
+                                </div>
+
+                            </div>
+
+
+                            <div class="divfieldrightrow" style="padding-left: 28%; float: left;">
+                                (This Id will be Generated Automatically)
+                            </div>
+                        }
+
+                        <div class="divfieldrightrow">
+
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Email Id">
+                                    Email Id
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "popuproletxtbox fulwdth", Title = "Email Id" })
+                                @Html.ValidationMessageFor(model => model.Email)
+                            </div>
+
+                        </div>
+                        <div class="Validationdiv" style="padding-left: 154px;">
+                            (Email Id will be Consider as your Login Id)
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Password">
+                                    Password
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.PasswordFor(model => model.Password, new { value = Model.Password, @class = "popuproletxtbox", Title = "Password" })<br />
+                                @Html.ValidationMessageFor(model => model.Password)
+                            </div>
+
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Confirm Password">
+                                    Confirm Password
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.PasswordFor(model => model.Confirm, new { value = Model.Password, @class = "popuproletxtbox", Title = "Confirm Password" })<br />
+                                @Html.ValidationMessageFor(model => model.Confirm)
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Full Name">
+                                    Full Name
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.FullName, new { @class = "popuproletxtbox fulwdth", Title = "Full Name" })<br />
+                                @Html.ValidationMessageFor(model => model.FullName)
+                            </div>
+
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Mobile">
+                                    Mobile
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.Mobile, new { @class = "popuproletxtbox", style = "text-align:right;", Title = "Mobile" })<br />
+                                @Html.ValidationMessageFor(model => model.Mobile)
+                            </div>
+
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Gender">
+                                    Gender
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DropDownListFor(model => model.Gender, Model.GenderText, new { @class = "popuproletxtbox", Title = "Gender" })<br />
+                                @Html.ValidationMessageFor(model => model.Gender)
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Phone">
+                                    Phone
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.Phone, new { @class = "popuproletxtbox", style = "text-align:right;", Title = "Phone" })<br />
+                                @Html.ValidationMessageFor(model => model.Phone)
+                            </div>
+
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Address">
+                                    Address
+                                </label>
+                            </div>
+                            <div class="divTextbox" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.AddressLine1, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+
+
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Address">
+
+                                </label>
+                            </div>
+
+                            <div class="divTextbox address" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.AddressLine2, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+
+
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Address">
+
+                                </label>
+                            </div>
+
+                            <div class="divTextbox address" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.AddressLine3, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+
+
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="City">
+                                    City
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.city, new { @class = "popuproletxtbox", Title = "City" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.city)
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="State">
+                                    State
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.State, new { @class = "popuproletxtbox", Title = "State" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.State)
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Country">
+                                    Country
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.Country, new { @class = "popuproletxtbox", Title = "Country" })
+
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Country)
+                        </div>
+                    </div>
+                    <div style="float: left; width: 35%; margin-left: 3%">
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label title="User Role">
+                                    User Role
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DropDownListFor(model => model.RoleId, Model.UserRole, new { @class = "popuproletxtbox", @style = "width: 166px;", Title = "User Role" })
+                            </div>
+                        </div>
+                        <div class="Validationdiv" style="padding-left: 216px; ">
+                            @Html.ValidationMessageFor(model => model.RoleId)
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label title="Date Of Birth">
+                                    Date Of Birth
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.DOB, @Model.DOB.FormatDate(), new { @class = "popuproletxtbox datepicker", Title = "Date Of Birth" })<br />
+                            </div>
+                            <div class="lng_vald">
+                                @Html.ValidationMessageFor(model => model.DOB)
+                            </div>
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label title="Date Joined">
+                                    Date Joined
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.DateJoinded, @Model.DateJoinded.FormatDate(), new { @class = "popuproletxtbox datepicker", Title = "Date Joined" })<br />
+                            </div>
+                            <div class="lng_vald">
+                                @Html.ValidationMessageFor(model => model.DateJoinded)
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label title="Date Last">
+                                    Date Last
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.DateLast, @Model.DateLast.FormatDate(), new { @class = "popuproletxtbox datepickernoval", Title = "Date Last" })
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DateLast)
+                    </div>
+                    <div class="divFooter" id="actn_btn">
+                        <div class="divFooterStyle">
+                            <div class="divStyleForFooter">
+                                <div class="submit">
+                                    @if (Model.UserId == null || Model.UserId == "")
+                                    {
+                                        <input type="submit" name="btn_Submit" value="Save" id="btn_Submit" title="Click to Save " class="button">
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" name="btn_Submit" value="Update" id="btn_Submit" title="Click to Update " class="button">
+                                    }
+                                </div>
+                                <div class="divClear">
+                                    <input type="reset" name="btnUserClear" value="Clear" title="Click to Clear" class="button">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divfieldrightrow" style="border-bottom: solid 1px #8cbfe7; color: grey; padding-top: 10px;">
+                        <div class="modified-info">
+                            <div>
+                                <ul class="user">
+                                    <li>Created By:</li>
+                                    <li>@Html.DisplayFor(model => model.CreateName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Created By" })</li>
+                                </ul>
+                                <ul class="date">
+                                    <li>Created Date Time:</li>
+                                    <li>@Html.DisplayFor(model => model.CreateDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" })  </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="user">
+                                    <li>Modified By:</li>
+                                    <li> @Html.DisplayFor(model => model.ModifyName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Modified By" }) </li>
+                                </ul>
+                                <ul class="date">
+                                    <li>Modified Date Time:</li>
+                                    <li>@Html.DisplayFor(model => model.ModifyDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" }) </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>           
+    }
+<div style="clear:both;"></div>
+<script>
+    $(document).ready(function () {
+        $("#user_form").postAjax();
+        showdatetimepicker(".datepicker", "no", "mindate");
+    });
+</script>
+
+
+
+
+

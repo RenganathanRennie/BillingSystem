@@ -1,0 +1,274 @@
+﻿@model Hm.Admin.Models.Dashboard.DashBoardTwoSummaryModal
+@using Hm.Web.Framework.Extention
+
+
+<div style="width: 900px; overflow-x: scroll; margin-bottom:50px;" id="dashboard_two">
+
+    <div id="detail_container">
+        <div class="status-year" style="margin-left:770px;">@Model.StartDate.Year - @Model.EndDate.Year </div>
+        <div id="summary_header">
+            <ul>
+                <li>
+                    <div> Property </div>
+                </li>
+                <li class="date  text-center" style="margin-left: 160px;">
+                    <div> Agreement<br>Start Date </div>
+                </li>
+                <li class="date  text-center">
+                    <div>Agreement<br />End Date</div>
+                </li>
+                <li style="width:150px;">
+                    <div>Tenant Name</div>
+                </li>
+                <li>
+                    <div>NRIC</div>
+                </li>
+                <li>
+                    <div>Phone</div>
+                </li>
+                <li style="width:96px;">
+                    <div>MonthlyRental</div>
+                </li>
+                @for (var startdate = Model.StartDate; startdate <= Model.EndDate; startdate = startdate.AddMonths(1))
+                {
+                    <li style="width:25px; height:40px;" class="numeric">
+                        <div>@startdate.Month</div>
+                    </li>
+                }
+            </ul>
+        </div>
+        @foreach (var eachCategory in @Model.PropertyCategoryList)
+        {
+
+            <ul>
+                <li class="prop-category" style="width: 83%;">
+                    <div>@eachCategory.PropertyCategoryName</div>
+                </li>
+                <li>
+
+                    @foreach (var eachProp in eachCategory.PropertyDetailsList)
+                    {
+                        <ul>
+                            <li>
+                                <div title="@eachProp.PropertyName"> &nbsp; @eachProp.PropertyName</div>
+                            </li>
+                            <li class="date text-center" style="margin-left: 160px;">
+                                <div>&nbsp; @eachProp.AgreementStartDate.FormatDate()</div>
+                            </li>
+                            <li class="date text-center">
+                                <div>&nbsp; @eachProp.AgreementEndtDate.FormatDate()</div>
+                            </li>
+                            <li style="width:150px;">
+                                <div title="@eachProp.TenantName">&nbsp; @eachProp.TenantName</div>
+                            </li>
+                            <li>
+                                <div>&nbsp; @eachProp.TenantVisa</div>
+                            </li>
+                            <li class="numeric">
+                                <div>&nbsp;@eachProp.TenantPhone</div>
+                            </li>
+                            <li style="width:96px;" class="numeric">
+                                <div>&nbsp; @eachProp.RentAmount.FormatCurrenct()</div>
+                            </li>
+                            @foreach (var eachBooking in eachProp.PropertyBooked)
+                            {
+                                <li style="width: 25px; margin:0px 0px 0px 0px">
+                                    <div style="width: @eachBooking.Percentage%; margin:3px 0 0 0" class="book_status @eachBooking.CssPropertiesStartMont @eachBooking.CssPropertiesEndMonth" title="Form @eachProp.AgreementStartDate.FormatDate() To @eachProp.AgreementEndtDate.FormatDate()"></div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            </ul>
+
+        }
+
+    </div>
+</div>
+
+
+<style>
+    #dashboard_two .status-year {
+        text-align: left;
+        font-size: 15px;
+        margin-top: 19px;
+        font-weight: bold;
+    }
+
+    #dashboard_two #detail_container {
+        height: auto;
+        width: 1400px;
+    }
+
+    #dashboard_two .prop-category div {
+        font-size: 16px;
+        margin-top: 10px;
+        margin-left: 10px;
+        position:absolute;
+    }
+
+    #dashboard_two .prop-category {
+        font-size: 16px;
+        font-weight: bold;
+        background-color: #f0f3ff;
+        height: 40px;
+        border: solid 1px #b9bfd5;
+    }
+
+    #dashboard_two .numeric {
+        text-align: right !important;
+    }
+
+    #dashboard_two #detail_container > ul li > ul:first-child li {
+        border-top: solid 1px #b9bfd5;
+    }
+
+    #dashboard_two .text-center {
+        text-align: center !important;
+    }
+
+    #dashboard_two #detail_container > ul {
+        margin-bottom: 20px;
+    }
+
+
+        #dashboard_two #detail_container > ul li {
+            width: 100%;
+            text-align: left;
+            float: left;
+        }
+
+
+
+            #dashboard_two #detail_container > ul li > ul li {
+                height: 20px;
+            }
+
+    #dashboard_two #summary_header ul .date {
+        width: 100px !important;
+    }
+
+
+    #dashboard_two #detail_container > ul li > ul .date {
+        width: 100px !important;
+    }
+
+    #dashboard_two #detail_container > ul li > ul li {
+        float: left;
+        width: 158px;
+    }
+
+    #dashboard_two #detail_container > ul li > ul:nth-child(even) li {
+        background-color: #f0f3ff;
+    }
+
+    #dashboard_two #detail_container > ul li > ul:nth-child(odd) li {
+        background-color: #fff;
+    }
+
+    #dashboard_two #detail_container > ul li > ul li div {
+        margin-top: 3px;
+        margin-left: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #dashboard_two #detail_container > ul li > ul li:hover {
+        background-color: #808080;
+    }
+
+    #dashboard_two #detail_container > ul li ul {
+        clear: both;
+    }
+
+    #dashboard_two .middle_space_property {
+        clear: both;
+        border-bottom: solid 1px #b9bfd5;
+        width: 100%;
+        height: 18px;
+        margin-bottom: 16px;
+    }
+
+    #dashboard_two #detail_container > ul li > ul li {
+        float: left;
+        width: 158px;
+        border-right: solid 1px #b9bfd5;
+        border-bottom: solid 1px #b9bfd5;
+    }
+
+    #dashboard_two #detail_container > ul li > ul > li:first-child {
+        border-left: solid 1px #b9bfd5;
+        position:absolute;
+    }
+
+    #dashboard_two #detail_container > ul li > ul li:not(:first-child) {
+        float: left;
+        width: 80px;
+        border-right: solid 1px #b9bfd5;
+       
+      
+    }
+
+    #dashboard_two #summary_header ul li:first-child {
+        border-left: solid 1px #b9bfd5;
+        position: absolute;
+    }
+
+
+
+    #dashboard_two #summary_header ul li div {
+        margin-top: 4px;
+        font-weight: bold;
+        margin-right: 2px;
+        margin-left: 2px;
+        font-size: 14px;
+        color: #fff;
+    }
+
+    #dashboard_two #summary_header ul li {
+        float: left;
+        border-right: solid 1px #b9bfd5;
+        height: 40px;
+        width: 158px;
+        text-align: left;
+        font-size: 13px;
+        border-right: #B9BFD5 solid 1px;
+        border-bottom: #B9BFD5 solid 1px;
+        border-top: #B9BFD5 solid 1px;
+        background-color: #484E64;
+    }
+
+
+        #dashboard_two #summary_header ul li:not(:first-child) {
+            width: 80px;
+        }
+
+
+
+
+    #dashboard_two #summary_header {
+        height: 26px;
+    }
+
+    #dashboard_two .book_status {
+        height: 10px;
+        background: #0d8b0d;
+        width: 25px;
+    }
+
+    #dashboard_two .lease_start_month {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        float: right;
+    }
+
+    #dashboard_two .lease_end_month {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        float: left;
+    }
+
+    #dashboard_two ul li:first-child {
+    }
+</style>

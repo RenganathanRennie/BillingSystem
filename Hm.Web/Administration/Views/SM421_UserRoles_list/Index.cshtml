@@ -1,0 +1,201 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Hm.Admin.Helper;
+@model Hm.Admin.Models.User.UserRoleSearchModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+    bool canCreate = Access.ToFunction("SM421", "A");
+    bool canRead = Access.ToFunction("SM421", "V");
+    bool canUpdate = Access.ToFunction("SM421", "M");
+    bool canDelete =Access.ToFunction("SM421", "D");
+}
+
+                <div>
+                    <div class="sub_title" style=" padding-left: 0px; font-size: 20px;">
+                        User Roles
+                    </div>
+                    <div id="roles_index_form">
+                        @using (Html.BeginForm("Index", "ManageRoles", FormMethod.Get))
+                        {
+                            <div style="border: solid 0px red;">
+                                <div class="common_control_bg" style="height: 64px;">
+                                    <div class="frm_title">
+                                        Filter:
+                                    </div>
+                                   
+                                    <div style="float: left; width: 200px;">
+                                        <div style="padding-left: 10px; padding-top: 5px;">
+                                            <div class="job_lbl_outer" style="width: 82px;">
+                                                <label style=" margin-top: 2px;">
+                                                    Show Deleted:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-top: 2px; height: 25px;">
+                                                @Html.CheckBoxFor(model => model.ShowDeleted)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="float: left; width: 385px;">
+                                        <div style="padding-left: 10px; padding-top: 5px;">
+                                            <div class="job_lbl_outer" style="width: 90px;">
+                                                <label>
+                                                    Role Name:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-left: 10px; height: 25px;">
+                                                @Html.TextBoxFor(model => model.Name, new { @class = "txt_box" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="float: right; padding-right: 3px; padding-top: 0px">
+                                        <div class="btn_left_outer">
+                                            <input type="submit" name="btn_Search" value="Search" id="btn_Search" title="Click to search" class="button">
+                                        </div>
+                                        <div class="btn_right_outer">
+                                            <input type="submit" name="btn_Clear" value="Clear" id="btn_Clear" title="Click to clear" class="button">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div id="divGrid" style="width: 920px; border: 0px solid red; margin-top: 5px; ">
+                        <div id="add_or_edit"></div>
+                        <div class="grid_top_title">
+                            <div style="width: 100%">
+                                <div style="float: left; padding-top: 10px; padding-left: 10px; border: solid 0px red;
+                                            width: 20%;">
+                                    <div style="float: left;">
+                                        User Role Listings
+                                    </div>
+                                </div>
+                                <div style="float: right; padding-top: 10px;  border: solid 0px red;
+                                            width: 08%;">
+                                    <div style="float: right; padding-right: 15px;">                                       
+                                        <div id="divOpenUser" class="update_popup">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="icon_lst">
+                                    <img src="/images/info-icon.png" title="Information" />
+                                    <img src="/images/export-excel.png" title="Export To Excel" onclick="exportExcel()" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid_outer" id="grid">
+                            <div>
+                                <table cellspacing="0" cellpadding="15">
+                                    <tbody>
+                                        <tr class="grid_header">
+                                            @if (canUpdate)
+                                            {
+                                                <th class="ctrl_image">
+                                                    Edit
+                                                </th>
+                                            }
+                                            @if (canDelete)
+                                            {
+                                                <th class="ctrl_image">
+                                                    Del
+                                                </th>
+                                            }
+                                            <th>
+                                                Role Name
+                                            </th>
+                                            <th>
+                                                Role Description
+                                            </th>
+                                        </tr>
+                                        @foreach (var eachRole in Model.RoleData)
+                                        {
+                                            <tr>
+                                                @if (canUpdate)
+                                                {
+                                                    <td class="ctrl_image">
+                                                        <input type="image" src="~/images/icon-edit.gif" onclick="loadPartialUI('@Url.Action("Update", new { Id = @eachRole.RoleID })', '#add_or_edit','Update Role')">
+                                                    </td>
+                                                }
+                                                @if (canDelete)
+                                                {
+                                                    <td class="ctrl_image">
+                                                        <input type="image" src="~/images/icon-delete.gif" onclick="DeleteAction(@eachRole.RoleID)">
+                                                    </td>
+                                                }
+
+                                                <td>
+                                                    <span>@eachRole.RoleID</span>
+                                                </td>
+                                                <td>
+                                                    <span>@eachRole.RoleName</span>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div style="height: 5px">
+                        </div>
+                        <div id="divPaging">
+                            <div class="grid_bottom_paging">
+                                <div style=" float:left; padding-top: 0px; padding-left: 10px; border: solid 0px red;">
+                                    <div style="float: left;">
+                                        <div style="width: 698px; height: 25px; float: left; border: solid 0px red;">
+                                            @Html.PagedListPager(Model.RoleData, page => Url.Action("Index", new { page, Name = Model.Name }))
+                                        </div>
+                                        <div style="width: 206px; height: 25px; float: right; border: solid 0px red;">
+                                            <div style="float: right; padding-top: 5px;">
+                                                <span id="UserPaging_lblNoOfSites" class="grid_txtcolor">Showing @Model.TotalRecords User Role(s)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="border: solid 0px red; text-align: left; padding-left: 15px; padding-top:2px; width: 907px; height:4px;">
+                                <span id="UserPaging_lblStatusMessage" class="ErrorStatus"></span>
+                            </div>
+
+                        </div>
+                        <input name="btnHidden" type="hidden" id="btnHidden">
+                    </div>
+                </div>            
+    <script type="text/javascript">
+        function DeleteAction(delId) {
+            var con = confirm("Do you Really want to delete this role of an user");
+            if (con) {
+                $.ajax({
+                    url: '@Url.Action("Delete")',
+                    type: "post",
+                    dataType: 'json',
+                    data: { id: delId },
+                    error: function (data) {
+                        alert("Some Error Occured Please Reload the page.")
+                    },
+                    success: function (data) {
+                        if (data.status == 1)
+                            window.location.reload();
+                    }
+                })
+            }
+        }
+        $(document).ready(function () {
+            $("#btn_Clear").click(function () {
+                $(':input', "#roles_index_form form")
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            })
+        });
+
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/validatedate")
+
+

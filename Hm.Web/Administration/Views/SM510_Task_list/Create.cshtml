@@ -1,0 +1,321 @@
+﻿@model Hm.Admin.Models.Task.TaskModel
+@using Hm.Web.Framework.Extention;
+<style>
+    .divfieldrightrow {
+        width: 100%;
+    }
+
+    .UIheader {     
+        width: 100%;       
+        height: 35px;     
+    }
+
+</style>
+<div id="task_detail_form">
+    @using (Html.BeginForm("Create", "SM420_User_list", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.TaskCD, new { @class = "popuproletxtbox create_or_update" })
+        <div class="divHeader" id="user_lst">
+            <div class="accessrgt_add">
+                <div class="UIheader" style="margin-bottom:6px;">
+                    <div style="width:700px; float:left;"> @(Model.TaskCD == null ? "Create Task" : "Update Task - " + Model.Subject)</div>
+                    <div style="width:50px; padding-right:15px;float:right;"><a href="#" id="btn_AddNew" class="btn_addnew" title="Click to Hide" onclick="window.location.reload();"> Hide </a></div>
+                </div>
+                <div class="accessrgt_add">
+                    <div class="column_divid" id="prop_lst">
+
+                        @if (Model.TaskCD != null)
+                        {
+                            <div class="divfieldrightrow">
+                                <div class="popup_lbl_outer1">
+                                    <label title="User Code">
+                                        Task ID
+                                    </label>
+                                </div>
+                                <div style="float: left;padding-left: 15px;margin-top: 10px;">
+                                    @Html.TextBoxFor(model => model.TaskCD, new { @class = "popuplbldisabled", disabled = "disabled", @readonly = "readonly", Title = "User Code" })
+                                    @Html.ValidationMessageFor(model => model.TaskCD)
+                                </div>
+                            </div>
+                        }
+                       @* <div class="divfieldrightrow">
+                                <div class="popup_lbl_outer1">
+                                    <label title="Email Id">
+                                        Property Code
+                                    </label>
+                                </div>
+                                <div class="divTextbox" style="width: 72% !important;">
+                                    @Html.DropDownListFor(model => model.PropertyCD, Model.PropertyList, new { @class = "popuproletxtbox fulwdth" })
+                                    @Html.ValidationMessageFor(model => model.PropertyCD)
+                                </div>
+                            </div>
+                        *@
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Full Name">
+                                    Subject
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.Subject, new { @class = "popuproletxtbox fulwdth", Title = "Full Name" })<br />
+                                @Html.ValidationMessageFor(model => model.Subject)
+                            </div>
+
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Mobile">
+                                    Description
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextAreaFor(model => model.Description, 2, 20, new { @class = "popuproletxtbox", @style = "Width: 96%;height: 90px;" })
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Gender">
+                                    Category
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox" style="width: 162px;">
+                                @Html.DropDownListFor(model => model.CategoryID, Model.CategoryList, new { @class = "popuproletxtbox" })<br />
+                                @Html.ValidationMessageFor(model => model.CategoryID)
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Phone">
+                                    Due Date
+                                </label>
+                            </div>
+                            <div class="divTextbox" style="width:27%;">
+                                @Html.TextBoxFor(model => model.Duedate, @Model.Duedate.FormatDate(), new { @class = "popuproletxtbox datepicker", @style = "width:121px;" })<br />
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Address">
+                                    Assigned To
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox" style="width: 162px;">
+                                @Html.DropDownListFor(model => model.AssignedTo, Model.AssignedList, new { @class = "popuproletxtbox" })<br/>
+                                @Html.ValidationMessageFor(model => model.AssignedTo)
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="City">
+                                    Status
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DropDownListFor(model => model.Status, Model.StatusList, new { @class = "popuproletxtbox" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Status)
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="City">
+                                    Is Active
+                                </label>
+                            </div>
+                            <div class="divTextbox" style="width:0px;">
+                                @Html.CheckBoxFor(model => model.IsActive)
+                            </div>
+                        </div>
+                        <hr style="width: 919px; margin-top: 43px; margin-bottom: 10px;" />
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="City">
+                                    Is Recurring Task
+                                </label>
+                            </div>
+                            <div class="divTextbox" style="width:0px;">
+                                @Html.CheckBoxFor(model => model.IsRecurringTask)
+                            </div>
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="City">
+                                    Occur every
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DropDownListFor(model => model.Occurence, Model.OccurenceList, new { @class = "popuproletxtbox" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Status)
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="City">
+                                    Days
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DropDownListFor(model => model.Days, Model.DaysList, new { @class = "popuproletxtbox" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Status)
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Phone">
+                                    Start Date
+                                </label>
+                            </div>
+                            <div class="divTextbox" style="width:27%;">
+                                @Html.TextBoxFor(model => model.StartDate, @Model.StartDate.FormatDate(), new { @class = "popuproletxtbox datepicker", @style = "width:121px;" })<br />
+                            </div>
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+                                <label title="Phone">
+                                    Expire on date
+                                </label>
+                            </div>
+                            <div class="divTextbox" style="width:27%;">
+                                @Html.TextBoxFor(model => model.ExpireOnDate, @Model.ExpireOnDate.FormatDate(), new { @class = "popuproletxtbox datepicker", @style = "width:121px;" })<br />
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="divFooter" id="actn_btn">
+                        <div class="divFooterStyle">
+                            <div class="divStyleForFooter">
+                                <div class="submit">
+                                    @if (Model.TaskCD == null || Model.TaskCD == "")
+                                    {
+                                        <input type="button" name="btn_Submit" value="Save" id="btn_Submit_workOrder" title="Click to Save " class="button">
+                                    }
+                                    else
+                                    {
+                                        <input type="button" name="btn_Submit" value="Update" id="btn_Submit_workOrder" title="Click to Update " class="button">
+                                    }
+                                </div>
+                                <div class="divClear">
+                                    <input type="reset" name="btnUserClear" value="Clear" title="Click to Clear" class="button">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="divfieldrightrow" style="border-bottom: solid 1px #8cbfe7; color: grey; padding-top: 10px;">
+                <div class="modified-info">
+                    <div>
+                        <ul class="user"><li>Created By:</li><li>@Html.DisplayFor(model => model.CreateUserID, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Created By" })</li> </ul>
+                        <ul class="date"><li>Created Date Time:</li><li>@Html.DisplayFor(model => model.CreateDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" })  </li></ul>
+                    </div>
+                    <div>
+                        <ul class="user"><li>Modified By:</li><li> @Html.DisplayFor(model => model.ModifyUserID, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Modified By" }) </li></ul>
+                        <ul class="date"><li>Modified Date Time:</li><li>@Html.DisplayFor(model => model.ModifyDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" }) </li></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div style="clear:both;"></div>
+<script>
+
+    var selectedDay = '@Model.Days';
+    var weekDays = '<option value="">-- Select --</option>' +
+                    '<option value="Sun">Sun</option>' +
+                    '<option value="Mon">Mon</option>' +
+                    '<option value="Tue">Tue</option>' +
+                    '<option value="Wed">Wed</option>' +
+                    '<option value="Thu">Thu</option>' +
+                    '<option value="Fri">Fri</option>' +
+                    '<option value="Sat">Sat</option>';
+    var monthDays = {
+        html: function () {
+            var html = '<option value="">-- Select --</option>';
+            for (var i = 0; i <= 28; i++) {
+                if (selectedDay == i) {
+                    html += '<option selected=selected value="' + i + '">' + i + '</option>';
+                }
+                else {
+                    html += '<option value="' + i + '">' + i + '</option>';
+                }
+            }
+            return html;
+        }
+    }
+
+
+    $(document).ready(function () {   
+        if ($("#Occurence").val() == "Monthly") {
+            $("#Days").html(monthDays.html(selectedDay));
+        }
+        $("#Occurence").change(function () {
+            var value = $(this).val();
+            if (value == "Once" || value == "Daily") {
+                $("#Days").attr("disabled", true);
+            }
+            else {
+                $("#Days").attr("disabled", false);
+                if (value == "Weekly") {
+                    $("#Days").html(weekDays);
+                }
+                else {
+                    $("#Days").html(monthDays.html());
+                }
+            }
+        });
+
+
+        showdatetimepicker(".datepicker", "no", "maxdate");
+        $("form").removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+        $("#btn_Submit_workOrder").click(function () {           
+            if ($("#task_detail_form form").valid()) {
+                $("#loader").show();
+                var model = $("form").serialize();
+                $.ajax({
+                    url: $(".create_or_update").val() != "" ? '@Url.Action("Update")' : '@Url.Action("Create")',
+                    type: "post",
+                    dataType: 'json',
+                    data: model,
+                    error: function (data) {
+                        $("#loader").hide();
+                        alert("Some Error Occured Please Reload the page.")
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            alert("Success")
+                            window.location.reload();
+                        }
+                        else {
+                            $("#loader").hide();
+                            $("#add_or_edit").html(data.responseText);
+                        }
+                    }
+                })
+            }
+        });
+    });
+</script>
+
+

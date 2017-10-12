@@ -1,0 +1,25 @@
+﻿@model Hm.Admin.Models.Entry.PurchaseOrderCriteria
+@using Hm.Web.Framework.Extention
+<div id="invoice_Serch_criteria" class="criteria" data-url="/Report/ReportWebForm/PurchaseOrder.aspx?">
+    @using (Html.BeginForm("ShowInvoiceReport", "AS120_AptReports_list", new { @class = "searchCriteria" }))
+    {
+        <div class="inner_Cont">
+            <div> <span>  Start Date: </span> <span>@Html.TextBox("InvoiceStartDate", @Model.StartDate.FormatDate(), new { @class = "popuproletxtbox datepicker " }) </span></div>
+            <div> <span>  End Date: </span> <span>@Html.TextBox("InvoiceEndDate", @Model.EndDate.FormatDate(), new { @class = "popuproletxtbox datepicker " }) </span></div>
+            <div class="report_submit"> <input type="submit" name="btn_Submit" value="Prepare Report" title="Click to Save " style="width:100px;"></div>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        showdatetimepicker(".datepicker", "no", "mindate");
+        $(".criteria form").submit(function (e) {
+            e.preventDefault();
+            $("#tabs").tabs({ active: 1 });
+            $("#iframe1").attr("src", $(".criteria").data('url') + $(".criteria form").serialize());
+        })
+    })
+</script>
+
+
+

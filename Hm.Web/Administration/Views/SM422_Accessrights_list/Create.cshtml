@@ -1,0 +1,192 @@
+﻿@model Hm.Admin.Models.AccessRights.AccessRightsViewModel
+@{
+    Layout = null;
+}
+
+
+<div id="user_detail_form">
+    @using (Html.BeginForm(string.IsNullOrWhiteSpace(Model.RoleID) ? "Create" : "Update", "SM422_Accessrights_list", FormMethod.Post, new { id = "access_rights_form" }))
+    {
+        @Html.HiddenFor(model => model.flag, new { @class = "popuproletxtbox create_or_update" })
+        @Html.HiddenFor(model => model.CreateUserID)
+        @Html.HiddenFor(model => model.CreateDate)
+        @Html.HiddenFor(model => model.ModifyDate)
+        @Html.HiddenFor(model => model.CompanyCD)
+        @Html.AntiForgeryToken()
+
+        <div class="divHeader">
+            <div class="accessrgt_add">
+                <div class="UIheader">
+                    @(Model.RoleID == null ? "Create Access Rights" : "Update Access Rights - " + Model.RoleName)
+                    <div class="hidebtn">
+                        <div class="hidebtn_style">
+                            <a href="#" title="Hide" id="btn_AddNew" class="btn_addnew" onclick="window.location.href  ='@Url.Action("index")';">Hide</a>
+                            <div id="divOpenUser" class="update_popup">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accessrgt_add">
+                    <div class="column_divid">
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <span class="spanClass">*</span>
+                                <label>
+                                    Role Id :
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @if (Model.RoleID == null)
+                                {
+                                    @Html.TextBoxFor(model => model.RoleID, new { @class = "popuproletxtbox" });
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(model => model.RoleID, new { @class = "popuproletxtbox", @readonly = "readonly" });
+                                }
+                            </div>
+                            @Html.ValidationMessageFor(model => model.RoleID)
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <span class="spanClass">*</span>
+                                <label>
+                                    Role Name :
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.RoleName, new { @class = "popuproletxtbox" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.RoleName)
+                        </div>
+
+                        @*
+                        <div class="divfieldrightrow">
+
+                            <div class="popup_lbl_outer">
+                                <span class="spanClass">&nbsp;</span>
+                                <label>
+                                    Menu  :
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.ValidationMessageFor(model => model.MenuList)
+
+                              @Html.ListBox("Menu_List", Model.MenuList, new { @class = "popuproletxtbox", style = "Height:130px; " })
+
+                            </div>
+                        </div>
+                        *@
+                    </div>
+
+                    <div class="tble_view">
+
+
+                        <div class="divfieldrightrow">
+                            <div id='Function_List_View'>
+
+                                <table class="table" id="accrgts_tble">
+                                    <tr class="grid_header doc_header">
+                                        <th>
+                                            Function Name
+                                        </th>
+                                        <th>
+                                            Avilable  Rights
+                                        </th>
+                                        <th> Given Rights</th>
+                                    </tr>
+                                    @for (int i = 0; i < Model.RoleFunctionList.Count; i++)
+                                    {
+                                        <tr id="@Model.RoleFunctionList[i].MenuID" class="rowlist">
+                                            <td>
+                                                @Html.HiddenFor(modelItem => Model.RoleFunctionList[i].CompanyCD)
+                                                @Html.HiddenFor(modelItem => Model.RoleFunctionList[i].FunctionId)
+                                                @Html.HiddenFor(modelItem => Model.RoleFunctionList[i].RoleIDs)
+                                                @Html.HiddenFor(modelItem => Model.RoleFunctionList[i].MenuID)
+                                                @Html.HiddenFor(modelItem => Model.RoleFunctionList[i].FunctionName)
+                                                @Html.DisplayFor(modelItem => Model.RoleFunctionList[i].FunctionName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.RoleFunctionList[i].RightsAvailable)
+                                            </td>
+                                            <td width="200px">
+                                                @Html.TextBoxFor(modelItem => Model.RoleFunctionList[i].GivenRights, new { @class = "popuproletxtbox" })
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="clear:both;"></div>
+
+                    <div class="divFooter" id="actn_btn">
+                        <div class="divFooterStyle">
+                            <div class="divStyleForFooter">
+                                <div class="submit">
+                                    @if (Model.RoleID == null || Model.RoleID == "")
+                                    {
+                                        <input type="submit" name="btn_Submit" value="Save" id="btn_Submit" title="Click to save " class="button">
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" name="btn_Submit" value="Update" id="btn_Submit" title="Click to save " class="button">
+                                    }
+                                </div>
+
+                                <div class="divClear">
+                                    <input type="reset" name="btnUserClear" value="Clear" id="#" title="Click to clear" class="button">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divfieldrightrow" style="border-bottom: solid 1px #8cbfe7; color: grey; padding-top: 10px;">
+                        <div class="modified-info">
+                            <div>
+                                <ul class="user"><li>Created By:</li><li>@Html.DisplayFor(model => model.CreateName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Created By" })</li> </ul>
+                                <ul class="date"><li>Created Date Time:</li><li>@Html.DisplayFor(model => model.CreateDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" })  </li></ul>
+                            </div>
+                            <div>
+                                <ul class="user"><li>Modified By:</li><li> @Html.DisplayFor(model => model.ModifyName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Modified By" }) </li></ul>
+                                <ul class="date"><li>Modified Date Time:</li><li>@Html.DisplayFor(model => model.ModifyDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" }) </li></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<div style="clear:both;">
+
+</div>
+<script>
+    $("document").ready(function () {     
+        //$('.rowlist').hide();
+        $("#Menu_List").change(function () {
+            $("select option:selected").each(function () {
+                //$('.rowlist').hide();
+                var elm = '#' + $(this).val();
+                $(elm).first().show(function showNext() {
+                    $(this).next(elm).show(showNext);
+                });
+            })
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#access_rights_form").postAjax();
+        showdatetimepicker(".datepicker", "no", "mindate");
+    });
+</script>
+
+
+

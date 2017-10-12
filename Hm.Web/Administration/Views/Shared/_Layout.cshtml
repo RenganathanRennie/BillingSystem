@@ -1,0 +1,16 @@
+﻿@Html.Action("AdminHeaderLinks", "Common", new { Title = ViewBag.Title, ActiveTab = ViewBag.active_module })
+@Html.Partial("_AdminMenu")
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+
+@Html.Partial("_AdminFooter")
+
+

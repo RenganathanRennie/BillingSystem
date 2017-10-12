@@ -1,0 +1,246 @@
+﻿@using Hm.Web.Framework.Extention;
+@model Hm.Admin.Models.Expense.ExpenseReportModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+}
+@using Hm.Admin.Helper;
+<div class="content_body" align="center">
+    <div style="width: 1217px;" align="center">
+        <div style="padding-top: 10px; width: 966px;">
+            <div class="content_top">
+            </div>
+            <div id="contentmiddle" class="content_middle">
+                <div>
+                    <div class="sub_title">
+                        Profit Report
+                    </div>
+                    <div id="user_index_form">
+                        @using (Html.BeginForm("Index", "HQS320_HQReports_list", FormMethod.Get))
+                        {
+                            <div style="border: solid 0px red;">
+                                <div class="common_control_bg" style="height: 100px;">
+                                    <div class="frm_title">
+                                        Filter:
+                                    </div>
+                                    <hr>
+                                    <div style="float: left; width: 388px; border: 0px solid blue">
+                                        <div style="padding-left: 10px; padding-top: 5px;">
+                                            <div class="job_lbl_outer" style="width: 84px;">
+                                                <label>
+                                                    Property Code:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; height: 25px;">
+                                                @Html.TextBoxFor(model => model.PropertyCD, new { @class = "popuproletxtbox user_fulwdth custom_drop", @style = "width: 240px;" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="float: left; width: 385px;">
+                                        <div style="padding-left: 15px; padding-top: 5px;">
+                                            <div class="job_lbl_outer" style="width: 104px;">
+                                                <label>
+                                                    Property Category:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-left: 5px; height: 25px;">
+                                                @Html.DropDownListFor(model => model.PropertyCategoryCD, Model.PropertyCategoryList, "--All--", new { @class = "popuproletxtbox user_fulwdth", @style = "width: 240px;" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="float: left; width: 385px;">
+                                        <div style="padding-left: 15px; padding-top: 5px;">
+                                            <div class="job_lbl_outer" style="width: 60px; margin-left: 23px;">
+                                                <label>
+                                                    From Date:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-left: 5px; height: 25px;">
+                                                @Html.TextBoxFor(model => model.StartDate, Model.StartDate.FormatDate(), new { @class = "popuproletxtbox user_fulwdth datepicker", })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="float: left; width: 385px;">
+                                        <div style="padding-left: 15px; padding-top: 5px;">
+                                            <div class="job_lbl_outer" style="width: 48px; margin-left: 64px; ">
+                                                <label>
+                                                    To Date:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-left: 5px; height: 25px;">
+                                                @Html.TextBoxFor(model => model.EndDate, Model.EndDate.FormatDate(), new { @class = "popuproletxtbox user_fulwdth datepicker", })
+                                                @Html.ValidationMessageFor(a => a.EndDate)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="float: right; padding-right: 3px; padding-top: 0px">
+                                        <div class="btn_left_outer">
+                                            <input type="submit" name="btn_Search" value="Search" id="btn_Search" title="Click to Search" class="button">
+                                        </div>
+                                        <div class="btn_right_outer">
+                                            <input type="button" name="btn_Clear" value="Clear" onclick="window.location.href  = '@Url.Action("Index")';" id="btn_Clear" title="Click to clear" class="button">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+
+                <div id="divGrid" style="width: 450px; border: 0px solid red; margin-top: 5px; float: left; margin-right: 18px; margin-left: 22px; ">
+                    <div class="grid_top_title">
+                        <div style="width: 100%">
+                            <div style="float: left; padding-top: 10px; padding-left: 10px; border: solid 0px red;
+                                            width: 100px;">
+                                <div style="float: left;">
+                                    Sales Items
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid_outer" id="grid" style="width: 450px; height: 300px;">
+                        <div>
+                            <table cellspacing="0" cellpadding="15">
+                                <tbody>
+                                    <tr class="grid_header">
+                                        <th title="User ID">
+                                            Invoice No
+                                        </th>
+                                        <th>
+                                            Tenant Name
+                                        </th>
+                                        <th>
+                                            Agreement Code
+                                        </th>
+                                        <th>
+                                            Amount
+                                        </th>
+                                    </tr>
+                                    @foreach (var eachSales in Model.SalesList)
+                                    {
+                                        <tr>
+                                            <td style="width:100px;">
+                                                <span>@eachSales.SalesInvoiceNo</span>
+                                            </td>
+                                            <td style="width:250px;">
+                                                <span>@eachSales.apt_Tenant.TenantName</span>
+                                            </td>
+                                            <td style="width:80px;">
+                                                <span>@eachSales.AgreementCD</span>
+                                            </td>
+                                            <td style="text-align: right; width: 100px;">
+                                                @eachSales.SalesAmountAfterTax.FormatCurrenct()
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="3">Total </td>
+                                        <td style="text-align:right; width:100px;">
+                                            @Model.SalesTotal.FormatCurrenct()
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div style="height: 5px">
+                    </div>
+                    <input name="btnHidden" type="hidden" id="btnHidden">
+                    <div id="add_or_edit"></div>
+                </div>
+
+                <div id="divGrid" style="width: 450px; border: 0px solid red; margin-top: 5px; float:left;">
+                    <div class="grid_top_title">
+                        <div style="width: 100%">
+                            <div style="float: left; padding-top: 10px; padding-left: 10px; border: solid 0px red;
+                                            width: 100px;">
+                                <div style="float: left;">
+                                    Expense Items
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid_outer" id="grid" style="width: 450px; height: 300px;">
+                        <div>
+                            <table cellspacing="0" cellpadding="15">
+                                <tbody>
+                                    <tr class="grid_header">
+                                        <th>
+                                            Bill No
+                                        </th>
+                                        <th>
+                                            PO Number
+                                        </th>
+                                        <th>
+                                            Supplier
+                                        </th>
+                                        <th>
+                                            Amount
+                                        </th>
+                                    </tr>
+                                    @foreach (var eachExpense in Model.ExpenseList)
+                                    {
+                                        <tr>
+                                            <td style="width:100px;">@eachExpense.BillNumber</td>
+                                            <td style="width:100px;">@eachExpense.PONumber</td>
+                                            <td style="width:200px;">
+                                                @eachExpense.mst_Supplier.SupplierName
+                                            </td>
+                                            <td style="text-align:right; width:100px;">
+                                                @eachExpense.Amount.FormatCurrenct()
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="3">Total </td>
+                                        <td style="text-align:right; width:100px;">
+                                            @Model.ExpenseTotal.FormatCurrenct()
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div style="height: 5px">
+                    </div>
+                    <input name="btnHidden" type="hidden" id="btnHidden">
+                    <div id="add_or_edit"></div>
+                </div>
+                <table cellspacing="0" cellpadding="15" width="50%" style="float: right; margin-right: 20px; font-weight:bold;">
+                    <tr>
+                        <td style="text-align:right;">Profit / Loss</td>
+                        <td style="text-align:right;"> (@Model.SalesTotal - @Model.ExpenseTotal) &nbsp; = &nbsp; @Model.Profit.FormatCurrenct()</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="content_bottom">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        var propertyCodeCached = {};
+        autoComplete("#PropertyCD", '@Url.Action("GetSuggestion", "Common")' + "?param=PropertyCode", propertyCodeCached);
+
+
+        $("#btn_Clear").click(function () {
+            $(':input', "#user_index_form form")
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+        });
+
+        showdatetimepicker(".datepicker", "no", "mindate");
+    });
+</script>
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")

@@ -1,0 +1,56 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Hm.Admin.Helper;
+@using Hm.Admin.Models.WorkOrder;
+@model Hm.Admin.Models.WorkOrder.SearchWorkOrderModel
+@{
+    ViewBag.Title = "Work Order";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";  
+}
+<style>
+    #work_detail_form {
+        width: 95.5%;
+    }
+
+    #prop_lst {
+        width: 70%;
+    }
+
+    .fulwdth {
+        width: 70% !important;
+    }
+</style>
+<div class="content_body" align="center">
+    <div style="width: 1217px;" align="center">
+        <div style="padding-top: 10px; width: 966px;">
+            <div class="content_top">
+           
+            </div>
+            <div id="contentmiddle" class="content_middle">
+                <div>
+                    @using (Html.BeginForm())
+                    {
+                       
+                    }
+                    <div class="sub_title">
+                        Work Order
+                    </div>
+                    <div id="user_index_form">
+                    </div>                  
+                  
+                    @Html.Partial("WorkOrderList", Model)
+                    <div id="add_or_editTest">
+                       
+                    </div>
+                    
+                 
+                </div>
+            </div>
+            <div class="content_bottom">
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")

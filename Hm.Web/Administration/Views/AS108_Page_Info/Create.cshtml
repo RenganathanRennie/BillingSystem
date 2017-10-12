@@ -1,0 +1,194 @@
+﻿@model Hm.Admin.Models.PageHelp.PageHelpModel
+@using Hm.Web.Framework.Extention;
+<div id="pageHelp_detail_form">
+    @using (Html.BeginForm("Create", "SM420_User_list", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id, new { @class = "popuproletxtbox create_or_update" })
+        <div class="divHeader" id="user_lst">
+            <div class="accessrgt_add">
+                <div class="UIheader" style="margin-bottom:6px;">
+                    <div style="width:700px; float:left;"> @(Model.Id == 0 ? "Create Help" : "Update Help - " + Model.FunctionName) </div>
+                    <div style="width:50px; padding-right:15px;float:right;"><a href="#" id="btn_AddNew" class="btn_addnew" title="Click to Hide" onclick="window.location.reload();"> Hide </a></div>
+                </div>
+                <div class="accessrgt_add">
+                    <div style="float: left; width: 70%; margin-left: 3%">
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label>
+                                    Function Name
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DropDownListFor(model => model.FunctionName, Model.FunctionList, new { @class = "popuproletxtbox", @style = "width: 300px;" })<br />
+                                @Html.ValidationMessageFor(model => model.FunctionName)
+                            </div>
+                        </div>
+                        <div class="Validationdiv" style="padding-left: 216px; ">
+                           
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label>
+                                    Document Head
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.DocumentHead, new { @class = "popuproletxtbox", @style = "width: 300px;" })<br />
+                                @Html.ValidationMessageFor(model => model.DocumentHead)
+                            </div>
+                            <div class="lng_vald">
+                                
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label>
+                                    Is Active
+                                </label>                               
+                            </div>
+                            <div class="divTextbox">
+                                @Html.CheckBoxFor(model => model.IsActive, new { @class = "popuproletxtbox", @style = "width: 15px;" })<br />
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label title="Date Last">
+                                    Help Content
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.PageHelpInfo)                               
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.PageHelpInfo)
+                    </div>
+                    <div class="divFooter" id="actn_btn">
+                        <div class="divFooterStyle">
+                            <div class="divStyleForFooter">
+                                <div class="submit">
+                                    @if (Model.Id == null || Model.Id == 0)
+                                    {
+                                        <input type="button" name="btn_Submit" value="Save" id="btn_Submit" title="Click to Save " class="button">
+                                    }
+                                    else
+                                    {
+                                        <input type="button" name="btn_Submit" value="Update" id="btn_Submit" title="Click to Update " class="button">
+                                    }
+                                </div>
+                                <div class="divClear">
+                                    <input type="reset" name="btnUserClear" value="Clear" title="Click to Clear" class="button">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divfieldrightrow" style="border-bottom: solid 1px #8cbfe7; color: grey; padding-top: 10px;">
+                        <div class="modified-info">
+                            <div>
+                                <ul class="user">
+                                    <li>Created By:</li>
+                                    <li>@Html.DisplayFor(model => model.CreateUserID, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Created By" })</li>
+                                </ul>
+                                <ul class="date">
+                                    <li>Created Date Time:</li>
+                                    <li>@Html.DisplayFor(model => model.CreateDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" })  </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="user">
+                                    <li>Modified By:</li>
+                                    <li> @Html.DisplayFor(model => model.CreateUserID, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Modified By" }) </li>
+                                </ul>
+                                <ul class="date">
+                                    <li>Modified Date Time:</li>
+                                    <li>@Html.DisplayFor(model => model.ModifyDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" }) </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div style="clear:both;"></div>
+<style>
+    .field-validation-error {
+        margin-right: -13px;
+    }
+</style>
+@Scripts.Render("~/ui/tinymce")
+<script type="text/javascript">
+    (function () {    
+        tinyMCE.baseURL = '@Url.Content("~/Scripts/tinymce")';
+        tinyMCE.init({
+            // General options
+            mode: "exact",
+            elements: "PageHelpInfo",
+            theme: "modern",
+            height: "500",
+            width: "790",
+            verify_html: false,
+            plugins: "",
+            // Theme options
+            theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+            theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+            theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+            theme_advanced_buttons4: "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,restoredraft,codehighlighting,netadvimage",
+            theme_advanced_toolbar_location: "top",
+            theme_advanced_toolbar_align: "left",
+            theme_advanced_statusbar_location: "bottom",
+            theme_advanced_resizing: false,
+
+            // Example content CSS (should be your site CSS)
+            //content_css : "css/content.css",
+            content_css: "@Url.Content("~/Scripts/tinymce/css/content.css")",
+            convert_urls: false,
+
+        });
+    })();
+    $(document).ready(function () {
+
+        $("form").removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+      
+        $("#btn_Submit").click(function () {
+            $("#PageHelpInfo").val(tinyMCE.activeEditor.getContent())                    
+            var model = $("#pageHelp_detail_form form").serialize();
+            if ($("#pageHelp_detail_form form").valid()) {
+                $.ajax({
+                    url: $(".create_or_update").val() == 0 ? '@Url.Action("Create")' : '@Url.Action("Update")',
+                    type: "post",
+                    dataType: 'json',
+                    data: model,
+                    error: function (data) {
+                        $("#loader").hide();
+                        alert("Some Error Occured Please Reload the page.")
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            alert(data.responseText);
+                            window.location.reload();
+                        }
+                        else {
+                            $("#loader").hide();
+                            $("#add_or_edit").html(data.responseText);
+                        }
+
+                    }
+                })
+            }
+        });
+    })
+</script>
+
+
+
+
+

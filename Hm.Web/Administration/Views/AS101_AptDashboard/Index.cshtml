@@ -1,0 +1,345 @@
+﻿@model Hm.Admin.Models.Dashboard.DashboardModel
+@using Hm.Admin.Helper;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+   
+}
+                 
+                    <div id="tabs" style="width:970px;">
+                        <ul>
+                            <li>
+                                <a href="#tabs-1">
+                                    Dashboard
+                                </a>
+                            </li>                           
+
+                            <li>
+                                <a href="@Url.Action("Index", "IS600_Issue_Details")">
+                                    Add Issue
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div id="tabs-1">
+                         
+                                <div id="divGrid" class="dash_bdr_inner">
+                                    @*<div class="sub_head" style="width: 885px;">
+                                        <div class="sub_head_inner">
+                                            <span id="addWorkOrder">Add Work Order</span>
+                                            <span id="addNewTask">Add Task</span>                                            
+                                        </div>
+                                    </div>*@
+                                   
+                                    @*<div class="dasbrd_head">
+                                        <span>Overview</span>
+                                    </div>
+                                    <div class="dasbrd_grid" id="overViewContainer">
+                                        <div>
+                                            <table cellspacing="0" cellpadding="15" id="dasbrd_tble1">
+                                                <tbody>
+                                                    <tr class="grid_header">
+                                                        <th> No of Property : @ViewBag.PropertyCount </th>
+                                                        <th> Agreement Ending</th>
+                                                    </tr>
+
+                                                    @foreach (var eachData in @Model.PropertiesGroup)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <br>
+                                                                @eachData.PropertyName<br>
+                                                                <span>Occupied (@eachData.Occupied), Vacant (@eachData.Vaccant)</span><br><span style="float:right; cursor:pointer;" data-category="@eachData.PropertyCategory"  class="view_prop_details">View Details</span>
+                                                                <br>
+                                                            </td>
+                                                            <td>
+                                                                30 days (@eachData.EndingInMonth), 60 days (@eachData.EndingInTwoMonth)
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                            <div id="detailsList"></div>
+                                        </div>
+                                    </div>*@
+                                    <div class="dasbrd_head">
+                                        <span>Overdue Invoice</span>
+                                    </div>
+                                    <div class="dasbrd_grid" >
+                                        <div>
+                                            <table cellspacing="0" cellpadding="15" id="dasbrd_tble">
+                                                <tbody>
+                                                    <tr class="grid_header">
+                                                        <th class="txt_algn_lft"> Customer Name </th>
+                                                        <th class="txt_algn_lft"> Invoice Date </th>
+                                                        <th> Contact </th>
+                                                        <th> Overdue Amount</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Customer Name
+                                                        </td>
+                                                        <td>
+                                                            Invoice Date
+                                                        </td>
+                                                        <td class="txt_algn_rght">
+                                                            Contact
+                                                        </td>
+                                                        <td class="txt_algn_rght">
+                                                            Overdue Amount
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="dasbrd_head">
+                                        <span>Overdue Task</span>
+                                    </div>
+                                    <div class="dasbrd_grid" id="task_list">
+                                        @if (Access.ToFunction("SM510", "V"))
+                                        {
+                                            @Html.Action("DashBoardTask", "SM510_Task_list")
+                                        }
+                                    </div>
+                                  
+                                        </div>
+                                    </div>
+                                </div>
+                            <div style="clear:both;"></div>
+                        </div>                      
+                        <div id="tabs-3" class="tab3" style=" padding: 0px !important;">
+                        </div>                    
+                    </div>
+                    
+               
+
+<style type="text/css">
+    .ui-tabs .ui-tabs-panel {
+        padding: 0px !important;
+        margin-left: 1.2pc;
+    }
+
+    .UIheader {
+        width: 874px;
+    }
+
+    / Dashboard Style / .dash_bdr_inner {
+        width: 907px;
+        border: 0px solid red;
+        margin: 10px 0px;
+        height: 610px;
+        margin-left: 1.5pc;
+    }
+
+    .sub_head {
+        width: 100%;
+        float: left;
+        / margin: 0 auto;
+        / border-bottom: 1px solid #4a5066;
+        margin-bottom: 10px;
+    }
+
+    .sub_head_inner {
+        width: 42%;
+        float: right;
+        /*margin: 0px 29%;*/
+    }
+
+    .sub_head span, .dasbrd_head span {
+        background-color: #4a5066;
+        border-radius: 9px 9px 0 0;
+        -webkit-border-radius: 9px 9px 0 0;
+        -moz-border-radius: 9px 9px 0 0;
+        -ms-border-radius: 9px 9px 0 0;
+        -o-border-radius: 9px 9px 0 0;
+        color: #000000;
+        cursor: pointer;
+        display: block;
+        float: right;
+        font-size: 14px;
+        margin-left: 4px;
+        position: relative;
+        transition: background-color 0.2s ease-out 0s;
+        color: #fff;
+        padding: 8px 15px 8px 13px;
+    }
+
+        .sub_head span:hover, .dasbrd_head span:hover {
+            background-color: #f36501;
+        }
+
+    .dash_bdr_inner table th {
+    }
+
+    .dasbrd_head {
+        width: 100%;
+        float: left;
+    }
+
+        .dasbrd_head span {
+            float: left;
+            margin-left: 0;
+        }
+
+    .dasbrd_grid {
+        float: left;
+        border: solid 1px #fff;
+        width: 97.5%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    #dasbrd_tble th {
+        text-align: left;
+    }
+
+    .txt_algn_rght {
+        text-align: right;
+    }
+
+    #add_or_edit hr {
+        width: 895px !important;
+    }
+
+    #add_or_edit .divfieldrightrow {
+        width: 877px !important;
+    }
+
+    #overViewContainer .grid_outer {
+        margin-left: 0px;
+    }
+
+    .ui-dialog {
+        margin-left: 24%;
+    }
+
+    .grid_top_title {
+        width: 94% !important;
+    }
+
+    #propertyView .grid_outer {
+        width: 94% !important;
+        margin-left: 0;
+    }
+
+    .ui-widget-overlay {
+        background-color: #000;
+    }
+
+    .ui-dialog-titlebar span {
+        color: #000 !important;
+    }
+
+    #task_list #divGrid {
+        width: 910px !important;
+    }
+
+    #task_list #divGrid {
+        width: 862px !important;
+    }
+</style>
+<script>
+    $(function () {
+        $("#tabs").tabs({
+            ajaxOptions: {
+                error: function (xhr, status, index, anchor) {
+                    $("#loader").hide();
+                },
+                beforeSend: function () {
+                    $('#loader').show();
+                },
+                complete: function () {
+                    $("#loader").hide();
+                }
+            },
+            beforeLoad: function (event, ui) {
+                ui.jqXHR.error(function () {
+                    ui.panel.html(
+                      "Couldn't load this tab.");
+                });
+            }
+        });
+
+        var tabTitle = $("#tab_title"),
+     tabContent = $("#tab_content"),
+     tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
+     tabCounter = 2;
+        var tabs = $("#tabs").tabs();
+
+        function addTab() {
+
+            var label = tabTitle.val() || "Tab " + tabCounter,
+              id = "tabs-" + tabCounter,
+              li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, "Property Details" ) ),
+              tabContentHtml = tabContent.val() || "Tab " + tabCounter + " content.";          
+
+            tabs.find( ".ui-tabs-nav" ).append( li );
+            tabs.append("<div id='" + id + "'></div>");
+            tabs.tabs("refresh");
+          
+            tabCounter++;
+            return id;
+        }
+
+        $(".view_prop_details").click(function(){           
+            var propName = $(this).data("category");
+            var url = '@Url.Action("CategoryWiseProperty")' + '?propName=' + propName;          
+            var id = addTab();           
+            $.get(url, function (data) {
+                $("#" + id).html(data);
+            });
+            $("#tabs").tabs({ active: 3, });
+            $('#tabs').tabs('load', 3);
+
+        });
+
+
+        // addTab button: just opens the dialog
+        $( "#add_tab" )
+          .button()
+          .click(function() {
+              dialog.dialog( "open" );
+          });
+
+        // close icon: removing the tab on click
+        tabs.delegate( "span.ui-icon-close", "click", function() {
+            var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+            $( "#" + panelId ).remove();
+            tabs.tabs( "refresh" );
+        });
+
+        tabs.bind( "keyup", function( event ) {
+            if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
+                var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
+                $( "#" + panelId ).remove();
+                tabs.tabs( "refresh" );
+            }
+        });
+
+    });
+
+    function ShowProperty(propName) {
+        window.location.href = '@Url.Action("CategoryWiseProperty")' + "?propName=" + propName;
+
+    }
+
+
+
+    $(document).ready(function () {
+
+        $("#addNewTask").click(function () {
+            loadPartialUI('@Url.Action("Create","SM510_Task_list")', '#add_or_edit')
+        });
+        $("#addNewIssue").click(function () {
+            loadPartialUI('@Url.Action("Create", "IS600_Issue_Details")', '#add_or_edit')
+        });
+        $("#addWorkOrder").click(function () {
+            loadPartialUI('@Url.Action("Create", "SM511_Work_Order")', '#add_or_edit')
+        });
+    });
+
+</script>
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")

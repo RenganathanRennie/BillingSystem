@@ -1,0 +1,184 @@
+﻿@using Hm.Core.Domain;
+@model Hm.Admin.Models.Customer.CustomerModel
+<div id="dialog_chekin_details" title="Shipping Details"></div>
+    <div>
+        <br />
+        @using (Html.BeginForm(string.IsNullOrWhiteSpace(Model.CustomerID) ? "Create" : "Update", "SM432_Customer_list", FormMethod.Post, new { @id = "customer_form" }))
+        {
+
+            @Html.HiddenFor(a => a.CompanyCD)
+            <div class="form-container-new">
+                <div style="float: left; width: 50%;">
+
+                    @if (Model.EnablePrimary)
+                    {
+                        <div class="control-container">
+                            @Html.Label("Customer CD")
+                            @Html.TextBoxFor(model => model.CustomerID, Model.UpdateMode ? (object)new { @class = "popuproletxtbox", @readonly = "" } : new { @class = "popuproletxtbox" })
+                            @Html.ValidationMessageFor(model => model.CustomerID)
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(a => a.CustomerID)
+                    }
+
+                    <div class="control-container">
+                        @Html.Label("Customer Name")
+                        @Html.TextBoxFor(model => model.CustomerName, new { @class = "popuproletxtbox", @style = "width:250px;" })
+                        @Html.ValidationMessageFor(model => model.CustomerName)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("Address")
+                        <fieldset style="border:none;">
+                            @Html.TextBoxFor(model => model.AddressLine1, new { @class = "popuproletxtbox", @style = "width:250px;" })
+                            @Html.TextBoxFor(model => model.AddressLine2, new { @class = "popuproletxtbox", @style = "width:250px;" })
+                            @Html.TextBoxFor(model => model.AddressLine3, new { @class = "popuproletxtbox", @style = "width:250px;" })
+                        </fieldset>
+                        @Html.ValidationMessageFor(model => model.AddressLine1)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("Roc Number")
+                        @Html.TextBoxFor(model => model.ROCNum, new { @class = "popuproletxtbox", @style = "width:150px;" })
+                        @Html.ValidationMessageFor(model => model.ROCNum)
+                    </div>
+                    <div class="control-container">
+                        @Html.Label("Telephone")
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "popuproletxtbox", @style = "width:150px;" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("Email")
+                        @Html.TextBoxFor(model => model.Email, new { @class = "popuproletxtbox", @style = "width:250px;" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("Website")
+                        @Html.TextBoxFor(model => model.Website, new { @class = "popuproletxtbox", @style = "width:250px;" })
+                        @Html.ValidationMessageFor(model => model.Website)
+                    </div>
+                    <div class="control-container">
+                        @Html.Label("Fax")
+                        @Html.TextBoxFor(model => model.Fax, new { @class = "popuproletxtbox", @style = "width:250px;" })
+                        @Html.ValidationMessageFor(model => model.Fax)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("Country")
+                        @Html.DropDownListFor(model => model.Country, Model.CountryList, "-- Select --", new { @class = "popuproletxtbox selectpicker", @style = "width:200px;" })
+                        @Html.ValidationMessageFor(model => model.Country)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("TRan. Currency")
+                        @Html.DropDownListFor(model => model.TrnCurrency, Model.CurrencyList, new { @class = "popuproletxtbox selectpicker", @style = "width:100px;" })
+                        @Html.ValidationMessageFor(model => model.TrnCurrency)
+                    </div>
+                    <div class="control-container">
+                        @Html.Label("PostalCD")
+                        @Html.TextBoxFor(model => model.PostalCD, new { @class = "popuproletxtbox", @style = "width:250px;" })
+                        @Html.ValidationMessageFor(model => model.PostalCD)
+                    </div>
+                     <div class="control-container">
+                        @Html.Label("Tax Code")
+                        @Html.DropDownListFor(model => model.TaxCD, Model.TaxList, "-- Select --", new { @class = "popuproletxtbox selectpicker", @style = "width:150px;" })
+                        @Html.ValidationMessageFor(model => model.TaxCD)
+                    </div>
+
+                </div>
+                <div style="float: left; width: 50%;">
+                    <div class="control-container">
+                        @Html.Label("Payment Mode", new { @style = "width:170px;" })
+                        @Html.DropDownListFor(model => model.PayMode, Model.PayModeList, "-- Select --", new { @class = "popuproletxtbox selectpicker", @style = "width:150px;margin-left: 2.5pc;" })
+                        @Html.ValidationMessageFor(model => model.PayMode)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("Payment Term", new { @style = "width:170px;" })
+                        @Html.DropDownListFor(model => model.PayTerm, Model.PayTermList, "-- Select --", new { @class = "popuproletxtbox selectpicker", @style = "width:150px;margin-left: 2.5pc;" })
+                        @Html.ValidationMessageFor(model => model.PayTerm)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("Credit Limit")
+                        @Html.TextBoxFor(model => model.CreditLimit, new { @class = "popuproletxtbox numeric", @style = "width:180px;margin-left: 2.5pc;" })
+                        @Html.ValidationMessageFor(model => model.CreditLimit)
+                    </div>
+
+                    <div class="control-container">
+                        @Html.Label("Default Shipping", new { @style = "width:170px;" })
+                        @Html.DropDownListFor(model => model.DefaultShipping, Model.ShippingList, "-- Select --", new { @class = "popuproletxtbox selectpicker", @style = "width: 243px;margin-left: 2.5pc;" })<span style=" margin-top: 4px; display: inline-table; margin-left: 6px; cursor:pointer;"><img src="~/images/add-icon.png" id="add_new_shipping" /></span>
+                        @Html.ValidationMessageFor(model => model.DefaultShipping)
+                    </div>
+                    <div class="control-container">
+                        @Html.Label("MaintenanceStartDate")                        
+                        @Html.TextBoxFor(model => model.MaintenanceStartDate, new { @class = " popuproletxtbox date-picker", @style = "width:250px;" })
+                        @Html.ValidationMessageFor(model => model.MaintenanceStartDate)
+                    </div>
+                    <div class="control-container">
+                        @Html.Label("MaintenanceEndDate")
+                        @Html.TextBoxFor(model => model.MaintenanceEndDate, new { @class = "popuproletxtbox date-picker", @style = "width:250px;margin-left: 0.5pc;" })
+                        @Html.ValidationMessageFor(model => model.MaintenanceEndDate)
+                    </div>
+                    <div class="control-container">
+                        @Html.Label("SignoffDate")
+                        @Html.TextBoxFor(model => model.SignoffDate, new { @class = "popuproletxtbox date-picker", @style = "width:250px;margin-left: 2.5pc;" })
+                        @Html.ValidationMessageFor(model => model.SignoffDate)
+                    </div>
+                    <div class="control-container">
+                        @Html.Label("WarrantyExpiryDt")
+                        @Html.TextBoxFor(model => model.WarrantyExpiryDt, new { @class = "popuproletxtbox date-picker", @style = "width:250px;margin-left: 2.2pc;" })
+                        @Html.ValidationMessageFor(model => model.WarrantyExpiryDt)
+                    </div>
+
+
+
+
+                </div>
+            </div>
+            <div class="submit-button-container">
+                <input type="submit" class="submit-button" />
+                <input type="button" class="submit-button" value="Cancel" onclick="window.location.href = '@Url.Action("index")'" />
+            </div>
+            <div style="clear:both;"></div>
+
+        }
+    </div>
+    <div style="clear:both;"> </div>
+    <script>
+        $(document).ready(function () {
+
+            $(".selectpicker").select2();
+
+
+            $("#customer_form").postAjax();
+            showdatetimepicker(".datepicker", "no", "mindate");
+
+            $("#add_new_shipping").click(function () {
+                $("#dialog_chekin_details").load('@Url.Action("Create", "SM405_Shipping_List")', function () {
+                    $("#loader").hide();
+                }).dialog({
+                    open: function (event, ui) { $("#loader").show() },
+                    height: 'auto',
+                    width: 'auto',
+                    position: ['center', 100],
+                    'z-index' : 10000000,
+                    modal: true
+                });
+            });
+
+        });
+    </script>
+<script type="text/javascript">
+    $(function () {
+        $(".date-picker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+
+    });
+
+</script>

@@ -1,0 +1,54 @@
+﻿@model Hm.Admin.Models.Dashboard.DashboardModel
+<div id="dashboard-tenant-property">
+    @foreach (var eachProperty in @Model.PropertyGroupData)
+    {
+        <ul>
+            <li>
+                @eachProperty
+            </li>
+            <li>
+                @foreach (var properties in @Model.PropertyData)
+                {
+
+                    <ul>
+
+                        <li onclick='ShowTenant("@Url.Action("View", "SM401_Property_list", new { SSId = @properties.PropertyCD })")'> Apaertment: @properties.Name</li>
+                        <li>Booked By: @(Model.AgreementData.Where(a => a.PropertyCD == properties.PropertyCD).FirstOrDefault() != null ? Model.AgreementData.Where(a => a.PropertyCD == properties.PropertyCD).FirstOrDefault().apt_Tenant.TenantName : "Not Booked")</li>
+                    </ul>
+
+                }
+            </li>
+        </ul>
+    }
+</div>
+<style>
+    #dashboard-tenant-property {
+        text-align: left;
+    }
+
+        #dashboard-tenant-property > ul {
+            clear: both;
+        }
+
+            #dashboard-tenant-property > ul > li {
+                font-size: 14px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+                #dashboard-tenant-property > ul > li:last-child {
+                    cursor: pointer;
+                }
+
+            #dashboard-tenant-property > ul ul {
+                width: 97%;
+                font-size: 12px;
+                margin-bottom: 2px;
+                float: left;
+                border: solid 1px;
+                margin-left: 10px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 10px;
+            }
+</style>

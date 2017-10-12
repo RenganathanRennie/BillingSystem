@@ -1,0 +1,96 @@
+﻿@model Hm.Admin.Models.User.UserRoles
+<div id="role_detail_form" style="height: 213px;">
+    @using (Html.BeginForm("Create", "ManageRoles", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.RoleID, new { @class = "popuproletxtbox create_or_update" })
+        <div style="border: solid 0px red; width: 100%; height: 90px; height: 172px;">
+            <div style="border: solid 0px red; width: 100%">
+                <div class="UIheader">@((Model.RoleID == null || Model.RoleID == 0) ? "Create Role" : "Update role") </div>
+                <div style="height: 93px;">
+                    <div style="float: left; border: solid 0px blue; padding-left: 0px; width: 580px">
+                        <div class="job_lbl_outer" style="border: 0px solid red; width: 90px">
+                            <span class="mandatory">*</span>
+                            <label>
+                                Role Name:
+                            </label>
+                        </div>
+                        <div style="float: left; padding-left: 0px; height: 25px; padding-top: 2px" align="center">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "popuproletxtbox" })
+                        </div>
+                    </div>
+                    <div style="float: left; height: 59px; border: 0px solid red">
+                        <div class="job_lbl_outer" style="border: 0px solid red; width: 90px; padding-top: 16px">
+                            <span class="mandatory">&nbsp;</span>
+                            <label>
+                                Description:
+                            </label>
+                        </div>
+                        <div style="float: left; padding-left: 0px; padding-top: 0px">
+                            @Html.TextAreaFor(model => model.Description, 2, 20, new { @class = "popuproletxtbox" })
+
+                        </div>
+                    </div>
+                </div>
+                <div style="border: solid 0px red;">
+                    <div style="border-top: solid 1px #8CBFE7; height: 42px; padding-top: 9px; width: 100%;">
+                        <div style="float: right; width: 150px; padding-top: 16px">
+                            <div style="float: right; padding-right: 0px; border: 0px solid red">
+                                <div style="float: left; padding-top: 2px; padding-right: 5px;">
+                                    <input type="button" name="btnSave" value="Update" id="btnSave" title="Click to update role" class="btn_blue_popup">
+                                </div>
+                                <div style="float: left; padding-top: 2px;">
+                                    <input type="button" name="btnClear" value="Cancel" id="btnClear" title="Click to cancel" class="btn_blue_popup">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<style>
+    textarea {
+        height: 54px !important;
+        width: 477px !important;
+        resize: none !important;
+    }
+</style>
+<script>
+    $("document").ready(function () {
+        $("#btnClear").click(function () {
+            $(':input', "#role_detail_form form")
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');;
+        })
+
+        $("#btnSave").click(function () {
+            if($("#role_detail_form form").valid()){
+            var model = $("#role_detail_form form").serialize();
+            $.ajax({
+                url: $(".create_or_update").val() != "" ? '@Url.Action("Update")' : '@Url.Action("Create")',
+                type: "post",
+                dataType: 'json',
+                data: model,
+                error: function (data) {
+                    alert("Some Error Occured Please Reload the page.")
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        window.location.reload();
+                    }
+                    else {
+                        $("#divOpenUser").html(data.responseText);
+                    }
+
+                }
+            })
+        }
+        })
+    });
+</script>
+    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")
+

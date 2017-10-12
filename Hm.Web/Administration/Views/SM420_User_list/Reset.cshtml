@@ -1,0 +1,110 @@
+﻿@model Hm.Admin.Models.User.ResetPwdViewModel
+<style>
+    #Statusmsg {
+        color: green;
+        font-weight:bold;
+    }
+</style>
+<div id="reset_pwd_form" style="height: 213px; padding-top: 0px; position: relative">
+    @using (Html.BeginForm("Reset", "SM420_User_list", FormMethod.Post))
+    {
+        <div style="border: solid 0px red;">
+
+            <div class="common_control_bg" style="width: 333px; float: left;padding-bottom:5px">
+                @*background: rgba(255, 255, 255, 0.59);*@
+                <div style="float: left; width: 100%; border: 0px solid blue">
+                    <div style="padding-left: 3px; padding-top: 15px;">
+
+                        <div style=" float: left; width: 100%;">
+                            <div class="job_lbl_outer" style="width: 115px;">
+                                <label title="Current Password">
+                                    Current Password:<span class="mandatory">*</span>
+                                </label>
+                            </div>
+                            <div style="float: left; padding-left: 0px; height: 25px;">
+                                @Html.PasswordFor(model => model.PrevPassword, new { style = "width:185px;", @title = "Current Password" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.PrevPassword)
+                        </div>
+                        <div style=" float: left; width: 100%;">
+                            <div class="job_lbl_outer" style="width:115px;">
+                                <label title="New Password">
+                                    New Password:<span class="mandatory">*</span>
+                                </label>
+                            </div>
+                            <div style="float: left; padding-left: 0px; height: 25px;">
+                                @Html.PasswordFor(model => model.NewPassword, new { style = "width:185px;", @title = "New Password" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.NewPassword)
+                        </div>
+                        <div style=" float: left; width: 100%;">
+                            <div class="job_lbl_outer" style="width: 115px;">
+                                <label title="Confirm Password">
+                                    Confirm Password:<span class="mandatory">*</span>
+                                </label>
+                            </div>
+                            <div style="float: left; padding-left: 0px; height: 25px;">
+                                @Html.PasswordFor(model => model.Confirm, new { style = "width:185px;", @title = "Confirm Password" })
+
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Confirm)
+                        </div>
+                        <div style=" float: left; width: 100%;">
+                            <div class="job_lbl_outer" style="width: 113px;" id="Statusmsg">
+                                @Html.ValidationMessage("ServerValidation")
+                            </div>
+                            <div style="float: left; padding-left: 0px; height: 25px;" id="Statusmsg">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="float: right; padding-right: 3px; padding-top: 0px">
+                    <div class="btn_left_outer">
+                        <input type="submit" name="btn_Reset" value="Reset" id="btn_Reset" title="Click to Reset" class="button">
+                    </div>
+                    <div class="btn_right_outer">
+                        <input type="submit" name="btn_Clear" value="Close" id="btn_Clear" title="Click to Close" class="button">
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $("document").ready(function () {
+        $("#btn_Clear").click(function () {
+            $("#divResetPwd").fadeOut("fast");
+           
+        })
+
+        $("#btn_Reset").click(function (e) {
+            e.preventDefault();
+            if ($("#reset_pwd_form form").valid()) {
+                var model = $("#reset_pwd_form form").serialize();
+                $.ajax({
+                    url: ' @Url.Action("Reset", "SM420_User_list")',
+                    type: "post",
+                    dataType: 'json',
+                    data: model,
+                    error: function (data) {
+                        alert("Some Error Occured Please Reload the page.")
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            $('#Statusmsg').text("Password Updated");
+                            $("#divResetPwd").fadeOut(3500);
+                        }
+                        else {
+                            $("#reset_pwd_form").html(data.responseText);
+                        }
+
+                    }
+                })
+
+            }
+        })
+    });
+</script>
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")

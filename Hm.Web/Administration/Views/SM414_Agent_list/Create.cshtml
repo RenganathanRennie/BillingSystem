@@ -1,0 +1,698 @@
+﻿@model Hm.Admin.Models.Agent.AgentViewModel
+@using Hm.Web.Framework.Extention
+<style type="text/css">
+    .crt_btm_dy {
+        border: 0px solid #ccc;
+    }
+
+    #divGrid table th, #divGrid table td {
+        width: auto;
+    }
+
+    .algn1 {
+        text-align: right;
+    }
+
+    .duble_divi .divTextbox input {
+        width: 180px;
+    }
+
+    .agname {
+        width: 52% !important;
+    }
+
+    .blck {
+        float: right;
+        margin-top: 12px;
+        margin-right: 12px;
+    }
+
+    .ctrl_image {
+        text-align: center;
+    }
+
+    .field-validation-error {
+        padding-right: 23px;
+    }
+
+    .bdr {
+        width: 98%;
+        float: left;
+        border-top: 1px solid #C0C0C0;
+        border-bottom: 1px solid #C0C0C0;
+        margin: 8px 0px 5px 0px;
+    }
+
+
+    #divGrid table th, #divGrid table td {
+        text-align: left;
+    }
+
+    .field-validation-error, .field-validation-error span {
+        padding-right: 0px;
+    }
+
+    .val_algn {
+        float: right;
+    }
+
+        .val_algn span {
+            padding-right: 0px;
+        }
+
+    .agenttxtbox_readonly {
+        font-size: 12px;
+        color: #696969;
+        padding: 1px 5px;
+        margin: 0;
+        font-family: Trebuchet MS, Arial, Helvetica, Verdana, sans-serif;
+        border: 1px solid #ccc;
+        background: #fff;
+        width: 145px;
+        float: left;
+        background-color: rgb(235, 235, 228);
+    }
+
+    .agenttxtbox {
+        font-size: 12px;
+        color: #696969;
+        padding: 1px 5px;
+        margin: 0;
+        font-family: Trebuchet MS, Arial, Helvetica, Verdana, sans-serif;
+        border: 1px solid #ccc;
+        background: #fff;
+        width: 145px;
+        float: left;
+        color: black;
+    }
+
+    integertxt {
+        text-align: left !important;
+        color: black;
+        font-weight: bold;
+    }
+</style>
+<div id="agent_detail_form">
+
+    @using (Html.BeginForm("Create", "SM414_Agent_list", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true);
+        <div class="divHeader">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id, new { @class = "create_or_update" })
+            @Html.HiddenFor(model => model.CreateUserID)
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.ModifiedDate)
+            @Html.HiddenFor(model => model.ModifiedDate)
+            @Html.HiddenFor(model => model.AgentCD)
+            @Html.HiddenFor(model => model.CompanyCD)
+            @Html.HiddenFor(model => model.IsDelete)
+
+
+            <div class="accessrgt_add">
+                <div class="UIheader">
+                    @((Model.Id == null || Model.Id == 0) ? "Create Agent" : "Update Agent - " + Model.AgencyName)
+                    <div class="hidebtn">
+                        <div class="hidebtn_style">
+                            <a href="#" title="Hide" id="btn_AddNew" class="btn_addnew" onclick="window.location.href  ='@Url.Action("index")';">Hide</a>
+                            <div id="divOpenAgent" class="update_popup">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accessrgt_add">
+                    <div class="column_divid" id="prop_lst">
+                        @if (Model.Id != null && Model.Id != 0)
+                        {
+                            <div class="divfieldrightrow">
+                                <div class="popup_lbl_outer">
+
+                                    <label>
+                                        @Html.Label("Agent Code")
+                                    </label>
+                                </div>
+                                <div class="divTextbox">
+                                    @Html.TextBoxFor(model => model.AgentCD, new { @class = "agenttxtbox_readonly", disabled = "disabled", @readonly = "readonly", @tooltip = "Agent Code" })
+                                    (This Id will be Generated Automatically)
+                                </div>
+
+                            </div>
+                        }
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+
+                                    @Html.Label("Agent Type")<span class="clr_red">*</span>
+
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DropDownListFor(model => model.AgentType, Model.AgentTypeList, "-- Select --", new { @class = "agenttxtbox", Title = "Agent Type" })
+                                @Html.ValidationMessageFor(model => model.AgentType)
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    @Html.Label("Agent Full Name")<span class="clr_red">*</span>
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.AgentFullName, new { @class = "popuproletxtbox fulwdth", Title = "Agent Full Name" })
+                                @Html.ValidationMessageFor(model => model.AgentFullName)
+                            </div>
+                        </div>
+                        <div class="fulwdth">
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+                                        <label>
+                                            Agent Nick Name<span class="clr_red">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.AgentNickName, new { @class = "agenttxtbox", Title = "Agent Nick Name" })
+                                        @Html.ValidationMessageFor(model => model.AgentNickName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer algn1">
+                                        <label>
+                                            @Html.Label("Gender")<span class="clr_red">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DropDownListFor(model => model.Gender, Model.GenderText, new { @class = "agenttxtbox", @id = "drp_gndr", Title = "Gender" })
+                                        @Html.ValidationMessageFor(model => model.Gender)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label>
+                                    Email<span class="clr_red">*</span>
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "popuproletxtbox fulwdth", Title = "Email" })
+                                @Html.ValidationMessageFor(model => model.Email)
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="fulwdth">
+
+                            <div class="duble_divi">
+
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+                                        <label>
+                                            Mobile<span class="clr_red">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.Mobile, new { @class = "popuproletxtbox integertxt", Title = "Mobile" })
+                                        @Html.ValidationMessageFor(model => model.Mobile)
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer algn1">
+                                        <label>
+                                            Phone
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.Phone, new { @class = "agenttxtbox integertxt", Title = "Phone" })
+                                        @Html.ValidationMessageFor(model => model.Phone)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    Address<span class="clr_red">*</span>
+
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.AddressLine1, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer address">
+
+                                <label>
+
+                                </label>
+                            </div>
+                            <div class="divTextbox address">
+                                @Html.TextBoxFor(model => model.AddressLine2, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer address">
+
+                                <label>
+
+                                </label>
+                            </div>
+                            <div class="divTextbox address">
+                                @Html.TextBoxFor(model => model.AddressLine3, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+                                @Html.ValidationMessageFor(model => model.AddressLine1)
+                            </div>
+
+                        </div>
+                        <div class="fulwdth">
+
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            @Html.Label("City")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.City, new { @class = "agenttxtbox", Title = "City" })
+                                        @Html.ValidationMessageFor(model => model.City)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer algn1">
+
+                                        <label>
+                                            @Html.Label("State")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.State, new { @class = "agenttxtbox", Title = "State" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.State)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fulwdth">
+
+
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            @Html.Label("Country")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.Country, new { @class = "agenttxtbox", Title = "Country" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Country)
+                                </div>
+                            </div>
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer algn1">
+
+                                        <label>
+                                            Postal Code
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.PostalCD, new { @class = "agenttxtbox integertxt", Title = "Postal Code" })
+                                        @Html.ValidationMessageFor(model => model.PostalCD)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fulwdth">
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+                                        <label>
+                                            Commission (%)<span class="clr_red">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.CommissionPercent, new { @class = "agenttxtbox integertxt", Title = "Commission" })
+                                        @Html.ValidationMessageFor(model => model.CommissionPercent)
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer algn1">
+
+                                        <label>
+                                            @Html.Label("License No")<span class="clr_red">*</span>
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.LicenseNo, new { @class = "popuproletxtbox fulwdth", Title = "License No" })
+                                        @Html.ValidationMessageFor(model => model.LicenseNo)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fulwdth">
+                            <div class="divfieldrightrow">
+                                <div class="popup_lbl_outer">
+                                    <label>
+                                        @Html.Label("Agency Name")<span class="clr_red">*</span>
+                                    </label>
+                                </div>
+                                <div class="divTextbox agname">
+                                    @Html.TextBoxFor(model => model.AgencyName, new { @class = "popuproletxtbox fulwdth", Title = "Agency Name" })
+                                    <div class="val_algn">
+                                        @Html.ValidationMessageFor(model => model.AgencyName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="blck">
+
+                                @Html.CheckBoxFor(model => model.IsBlackListed, new { Title = "Is Blacklisted" }) <span style="vertical-align:top">Is Blacklisted</span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.IsBlackListed)
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    @Html.Label("Comments")
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.TextAreaFor(model => model.Comments, new { @class = "popuproletxtbox fulwdth", style = "height:50px;", Title = "Comments" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Comments)
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="bdr">
+                                <div class="popup_lbl_outer">
+                                    <label>
+                                        Attach Documents
+                                    </label>
+                                </div><br />
+                                <div class="divfieldrightrow" id="doc_atch">
+                                    <div class="popup_lbl_outer">
+                                        <label class="lbl_wdth">Document Header</label>
+                                        <label>Browse to attach document</label>
+                                    </div>
+                                    <input type="text" id="txtHeaderAttach" style="text-align:left">
+                                    <div class="divTextbox">
+                                        @Html.TextBoxFor(model => model.DocumentString, new { @class = "popuproletxtbox fileDocuments fulwdth", type = "file", style = "padding:0px;", multiple = "true" })<br />
+                                    </div>
+                                    <div id="uploadedFile">
+                                    </div>
+                                    <div id="fileHeaderError" style="display: none;" class="field-validation-error">Please enter file header.</div>
+                                </div>
+                                @if (Model.AttachmentList != null && Model.AttachmentList.Count() > 0)
+                                {
+                                    <div id="attach_grid">
+
+                                        @foreach (var item in Model.AttachmentList.ToList())
+                                        {
+                                            <ul>
+                                                <li class="fileName">@item.DocumentHead</li>
+                                                <li class="fileHeade">@Path.GetFileName(@item.DocumentName)</li>
+                                                <li id="Delete_attach" data-url="@Url.Action("deleteattachment")/@item.Id" class="clr_red vw_pntr">Remove</li>
+                                            </ul>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column_divid" id="prop_lst1">
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label>
+                                    Agent Image
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.HiddenFor(model => model.AgentImage)
+                                @Html.TextBox("agentImage", "", new { Title = "Agent Image", @class = "popuproletxtbox imageUpload fulwdth", type = "file", style = "padding:0px;" })
+                            </div>
+                        </div>
+
+                        <div style="height: 120px; padding-top: 50px; ">
+                            <img src="@if (Model.AgentImage != null && Model.AgentImage != "")
+                                   {@Url.Content(@Model.AgentImage);
+                                   }else { @Url.Content("~/images/nopreview.jpg");}" class="popuproletxtbox" id="imagePrev1" />
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="accessrgt_add">
+                        <div style="clear:both;"></div>
+                        <div class="divFooter" id="actn_btn">
+                            <div class="divFooterStyle">
+                                <div class="divStyleForFooter">
+                                    <div class="submit">
+                                        @if (Model.Id == null || Model.Id == 0)
+                                        {
+                                            <input type="button" name="btn_Submit" value="Save" id="btn_Submit" title="Click to Save " class="button">
+                                        }
+                                        else
+                                        {
+                                            <input type="button" name="btn_Submit" value="Update" id="btn_Submit" title="Click to Update " class="button">
+                                        }
+                                    </div>
+                                    <div class="divClear">
+                                        <input type="reset" name="btnUserClear" id="btnUserClear" value="Clear" id="#" title="Click to Clear" class="button">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divfieldrightrow" style="border-bottom: solid 1px #8cbfe7; color: grey; padding-top: 10px;">
+                        <div class="modified-info">
+                            <div>
+                                <ul class="user"><li>Created By:</li><li>@Html.DisplayFor(model => model.CreateName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Created By" })</li></ul>
+                                <ul class="date"><li>Created Date Time:</li><li>@Html.DisplayFor(model => model.CreatedDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" })  </li></ul>
+                            </div>
+                            <div>
+                                <ul class="user"><li>Modified By:</li><li> @Html.DisplayFor(model => model.ModifyName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Modified By" }) </li></ul>
+                                <ul class="date"><li>Modified Date Time:</li><li>@Html.DisplayFor(model => model.ModifiedDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" }) </li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+</div>
+<script>
+    var newList = new Array();
+    newList['files'] = new Array();
+    newList['headerName'] = new Array();
+    var validDocFile = /(\.pdf|\.xls|\.xlsx|\.doc|\.docx)$/i;
+    var validImageFile = /(\.jpg|\.jpeg|\.bmp|\.gif|\.png)$/i;
+    $(document).ready(function () {
+        $("form").removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+        (function ($) {
+            $.fn.uploadAttach = function (action) {
+                var uploadCtrl = $(this);
+                var formData = new FormData();
+                if (action === "document") {
+                    $(this).change(function () {
+                        if ($("#txtHeaderAttach").val().trim() == "") {
+                            $("#fileHeaderError").fadeIn();
+                            $(uploadCtrl).val("");
+                            return;
+                        }
+                        else {
+                            $("#fileHeaderError").fadeOut();
+                        }
+                        var files = $(this).get(0).files;
+                        for (var i = 0; i < files.length; i++) {
+                            if (!validDocFile.exec(files.item(i).name)) {
+                                $("#fileHeaderError").html("Only 'pdf','xls','xlsx','doc','docx'");
+                                $("#fileHeaderError").fadeIn();
+                                return;
+                            }
+                            newList['files'].push(files.item(i));
+                            newList['headerName'].push($("#txtHeaderAttach").val().trim());
+                            $("#txtHeaderAttach").val('');
+                        }
+                        populateGrid();
+                        $(uploadCtrl).val("");
+                        $(uploadCtrl).prev().val("");
+                        formData.append('files', newList);
+                    });
+                }
+                if (action === "image") {
+                    $(this).change(function () {
+                        if (!validImageFile.exec($(this).get(0).files[0].name)) {
+                            $(this).val("");
+                            alert("Upload Only 'jpg','jpeg','bmp','gif','png'");
+                            return;
+                        }
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#imagePrev1').attr('src', e.target.result);
+                        };
+                        reader.onerror = function (event) {
+                            alert("File could not be read! Code " + event.target.error.code);
+                        };
+                        reader.readAsDataURL($(this).get(0).files[0]);
+                        $('#imagePrev1').css('display', 'none');
+                        $('#imagePrev1').fadeIn(2000);
+                    });
+                }
+                function populateGrid() {
+                    var textFile = "";
+                    for (var j = 0; j < newList['files'].length; j++) {
+                        textFile += "<ul><li class='fileHeade' style='text-align:left'>" + newList['headerName'][j] + "</li><li class='fileName'>" + newList['files'][j].name + "</li><li class='removefile' data-index='" + j + "'>Remove</li></ul>";
+                    }
+                    $("#uploadedFile").html('');
+                    $("#uploadedFile").append(textFile);
+                    $('.removefile').click(function () {
+                        newList['files'].splice($(this).data('index'), 1);
+                        newList['headerName'].splice($(this).data('index'), 1);
+                        populateGrid();
+                    })
+                }
+
+                $("#btn_Submit").unbind().click(function () {
+
+                    if ($("#agent_detail_form form").valid()) {
+                        $("#loader").show();
+                        var update = '@Url.Action("Update")';
+                        var create = '@Url.Action("Create")';
+                        var URL = '';
+                        if ($(".create_or_update").val() == "" || $(".create_or_update").val() == "0") {
+                            URL = create;
+                        }
+                        else {
+                            URL = update;
+                        }
+
+                        var model = $("#agent_detail_form form").serializeArray();
+                        var fd = new FormData();
+                        if ($("#agentImage").get(0).files.length > 0) {
+                            fd.append('AgentImage', $("#agentImage").get(0).files[0]);
+                        }
+                        $.each(model, function (key, input) {
+                            fd.append(input.name, input.value);
+                        });
+
+                        for (var k = 0; k < newList['files'].length; k++) {
+                            fd.append('attachFiles' + k, newList['files'][k]);
+                            fd.append('HeaderName[' + newList['files'][k].name + ']', newList['headerName'][k]);
+
+                        }
+                        $.ajax({
+                            url: URL,
+                            type: "post",
+                            dataType: 'json',
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            error: function (data) {
+                                $("#loader").hide();
+                                alert("Some Error Occured Please Reload the page.")
+
+                            },
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    alert(data.responseText);
+                                    window.location.reload();
+                                }
+                                else {
+
+                                    $("#loader").hide();
+
+                                    $("#agent_detail_form").html(data.responseText);
+
+                                }
+
+                            }
+                        })
+                    }
+                })
+
+            };
+
+        }(jQuery));
+
+
+        $(".fileDocuments").uploadAttach("document");
+        $(".imageUpload").uploadAttach("image");
+
+        showdatetimepicker(".datepicker", "no", "maxdate");
+        $("#btnUserClear").click(function () {
+            //$(':input', "#user_detail_form form")
+            //    .not(':button, :submit, :reset, :hidden')
+            //    .val('')
+            //    .removeAttr('checked')
+            //    .removeAttr('selected');
+            if ($(".create_or_update").val() == "" || $(".create_or_update").val() == "0") {
+                $('#imagePrev').attr('src', '');
+            }
+
+        })
+
+        //Delete Attachment
+        $("#attach_grid #Delete_attach").click(function (e) {
+            e.preventDefault();
+
+            if (confirm('Do you wish to delete this')) {
+
+                var URL = $(this).attr("data-url");
+                var tt = $(this).parents('ul');
+
+                $.ajax({
+                    url: URL,
+                    type: "post",
+                    dataType: 'json',
+                    data: '',
+                    error: function (data) {
+
+                        alert("Some Error Occured Please Reload the page.")
+
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+
+                            tt.fadeOut();
+                        }
+                        else {
+                            tt.fadeOut();
+                        }
+
+                    }
+                })
+
+            }
+        });
+
+        //Delete End
+    })
+</script>
+
+

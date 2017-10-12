@@ -1,0 +1,143 @@
+﻿@using Hm.Admin.Helper;
+@using Hm.Web.Framework.Extention;
+@model Hm.Admin.Models.Task.TaskSearchModel
+@{
+
+    bool canCreate = Access.ToFunction("SM510", "A");
+    bool canRead = Access.ToFunction("SM510", "V");
+    bool canUpdate = Access.ToFunction("SM510", "M");
+    bool canDelete = Access.ToFunction("SM510", "D");
+}
+@if (ViewBag.customcss == null)
+{
+    <style>
+        .grid_outer, .grid_bottom_paging {
+            width: 97%;
+            margin-left: -17px;
+        }
+    </style>
+}
+
+<div id="divGrid" style="width: 920px; border: 0px solid red; margin-top: 5px;">
+
+@if (!Model.ChildAction) {
+    <div class="grid_top_title">
+        <div style="width: 100%">
+            <div style="float: left; padding-top: 10px; padding-left: 10px; border: solid 0px red;
+                                            width: 12%;">
+                <div style="float: left;">
+                    Task Listings
+                </div>
+            </div>
+            <div style="float: right; padding-top: 10px;  border: solid 0px red;
+                                            width: 8%;">
+                <div style="float: right; padding-right: 15px;">                   
+                    <div id="divOpenUser" class="update_popup">
+                    </div>
+                </div>
+            </div>
+            <div class="icon_lst">
+                <img src="/images/info-icon.png" title="Information" class="info_msg" onclick="OpenHelp('@Url.Action("PageHelp", "Common", new { pageName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() })')" />
+                <img src="/images/export-excel.png" title="Export To Excel" onclick="exportExcel()" />
+            </div>
+        </div>
+    </div>
+}
+    <div class="grid_outer" id="grid" style="width: 100%; margin-left: 0px !important;">
+        <div>
+            <table cellspacing="0" cellpadding="15">
+                <tbody>
+                    <tr class="grid_header">
+                        @if (!Model.ChildAction)
+                        {
+                            <th class="ctrl_image" title="Edit"> Edit </th>
+
+                            <th class="ctrl_image" title="Delete"> Del </th>
+                        }
+                        <th title="User ID">
+                            Date
+                        </th>
+                        <th title="User ID">
+                            Type
+                        </th>
+                        <th title="Full Name">
+                            <a href="">
+                                Subject
+                            </a>
+                        </th>
+
+                        <th title="Mobile Number">
+                            Assigned To
+                        </th>
+                        <th title="Email Id">
+                            Status
+                        </th>
+                    </tr>
+                    @foreach (var eachTask in Model.PagedData.ToList())
+                    {
+                        <tr>
+                            @if (!Model.ChildAction)
+                            {
+                                if (canUpdate)
+                                {
+                                    <td class="ctrl_image" title="Edit">
+                                        <input class="populate_edit" data-action="@Url.Action("Update", new { taskId = eachTask.TaskCD })" type="image" src="~/images/icon-edit.gif" @* onclick="PopulateUpdate('@eachTask.TaskCD') " *@>
+                                    </td>
+                                }
+                                if (canDelete)
+                                {
+                                    <td class="ctrl_image" title="Delete">
+                                        <label data-url="" id="Delete_link">
+                                            <input type="image" id="delete_btn" src="~/images/icon-delete.gif" onclick="deleteTask('@eachTask.TaskCD')" />
+                                        </label>
+                                    </td>
+                                }
+                            }
+                            <td style="width:100px;">
+                                <span>@eachTask.Duedate.FormatDate()</span>
+                            </td>
+                            <td title="Click to View">
+                                <span></span>
+                            </td>
+                            <td>
+                                <span>@eachTask.Subject</span>
+                            </td>
+                            <td>
+                                <span>@eachTask.mst_staff.StaffFullName</span>
+                            </td>
+                            <td>
+                                @eachTask.Status
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div style="height: 5px">
+    </div>
+    <div id="divPaging">
+        <div class="grid_bottom_paging" style="width: 100%; margin-left: 0px !important;">
+            <div style=" float:left; padding-top: 0px; padding-left: 10px; border: solid 0px red;">
+                <div style="float: left;">
+                    <div style="width: 720px; height: 25px; float: left; border: solid 0px red;">
+                        @Html.PagedListPager(Model.PagedData, page => Url.Action("Index", new { page, FirstName = Model.Subject }))
+                    </div>
+                    <span id="UserPaging_lblNoOfSites" class="grid_txtcolor">Showing @Model.PageTotal Task(s) of @Model.TotalRecords</span>
+                   
+                </div>
+            </div>
+        </div>       
+    </div>
+  
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".populate_edit").populateAjax();
+        $("#search_data").searchAjax();
+    });
+</script>
+

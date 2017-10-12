@@ -1,0 +1,248 @@
+﻿@model Hm.Admin.Models.PropertyCategory.PropertyCategoryModal
+@using Hm.Web.Framework.Extention;
+<style type="text/css">
+    .divTextbox {
+        width: auto !important;
+    }
+
+    .field-validation-error, .field-validation-error span {
+        padding-right: 0px;
+    }
+</style>
+<div id="user_detail_form">
+    @using (Html.BeginForm("Create", "SM400_Property_Master_list", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.LocationCD, new { @class = "popuproletxtbox create_or_update" })
+        <div class="divHeader" id="user_lst">
+            <div class="accessrgt_add">
+                <div class="UIheader" style="margin-bottom:6px;">
+                    <div style="width:700px; float:left;"> @(Model.LocationCD == null ? "Create Property Category" : "Update Property Category - " + Model.PropertyName) </div>
+                    <div style="width:50px; padding-right:15px;float:right;"><a href="#" id="btn_AddNew" class="btn_addnew" title="Click to Hide" onclick="window.location.reload();"> Hide </a></div>
+                </div>
+                <div class="accessrgt_add">
+                    <div class="column_divid" id="prop_lst">
+
+                        @if (Model.LocationCD != null)
+                        {
+
+                            <div class="divfieldrightrow">
+
+                                <div class="popup_lbl_outer1">
+
+                                    <label title="User Code">
+                                        Category Code
+                                    </label>
+                                </div>
+
+                                <div style="float: left;padding-left: 15px;margin-top: 10px;">
+                                    @Html.TextBoxFor(model => model.LocationCD, new { @class = "popuplbldisabled", disabled = "disabled", @readonly = "readonly", Title = "User Code" })
+                                    @Html.ValidationMessageFor(model => model.LocationCD)
+                                </div>
+
+                                <div style="padding-left: 70px; padding-top: 1px; margin-top: 10px; float: left; ">
+
+                                    @Html.CheckBoxFor(model => model.IsActive, new { Title = "Active" })
+
+                                </div>
+                                <div class="popup_lbl_outer" style="padding-top: 10px; padding-left: 5px; ">
+
+                                    <label title="Active">
+                                        Is Active
+                                    </label>
+                                </div>
+
+                            </div>
+
+
+                            <div class="divfieldrightrow" style="padding-left: 28%; float: left;">
+                                (This Id will be Generated Automatically)
+                            </div>
+                        }
+
+                        <div class="divfieldrightrow">
+
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Email Id">
+                                    Category Name
+                                </label>
+                                <span class="spanClass">*</span>
+                            </div>
+                            <div class="divTextbox" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.PropertyName, new { @class = "popuproletxtbox fulwdth", Title = "Property Name" })
+                                @Html.ValidationMessageFor(model => model.PropertyName)
+                            </div>
+
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Address">
+                                    Address
+                                </label>
+                            </div>
+                            <div class="divTextbox" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.AddressLine1, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Address">
+
+                                </label>
+                            </div>
+
+                            <div class="divTextbox address" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.AddressLine2, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer1">
+
+                                <label title="Address">
+
+                                </label>
+                            </div>
+
+                            <div class="divTextbox address" style="width: 72% !important;">
+                                @Html.TextBoxFor(model => model.AddressLine3, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+
+
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="divFooter" id="actn_btn">
+                        <div class="divFooterStyle">
+                            <div class="divStyleForFooter">
+                                <div class="submit">
+                                    @if (Model.LocationCD == null || Model.LocationCD == "")
+                                    {
+                                        <input type="button" name="btn_Submit" value="Save" id="btn_Submit" title="Click to Save " class="button">
+                                    }
+                                    else
+                                    {
+                                        <input type="button" name="btn_Submit" value="Update" id="btn_Submit" title="Click to Update " class="button">
+                                    }
+                                </div>
+                                <div class="divClear">
+                                    <input type="reset" name="btnUserClear" value="Clear" title="Click to Clear" class="button">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divfieldrightrow" style="border-bottom: solid 1px #8cbfe7; color: grey; padding-top: 10px;">
+                        <div class="modified-info">
+                            <div>
+                                <ul class="user">
+                                    <li>Created By:</li>
+                                    <li>@Html.DisplayFor(model => model.CreateUserID, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Created By" })</li>
+                                </ul>
+                                <ul class="date">
+                                    <li>Created Date Time:</li>
+                                    <li>@Html.DisplayFor(model => model.CreateDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" })  </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="user">
+                                    <li>Modified By:</li>
+                                    <li> @Html.DisplayFor(model => model.ModifyUserID, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Modified By" }) </li>
+                                </ul>
+                                <ul class="date">
+                                    <li>Modified Date Time:</li>
+                                    <li>@Html.DisplayFor(model => model.ModifyDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" }) </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    }
+    </div>
+        <script>
+            $("document").ready(function () {
+                showdatetimepicker(".datepicker", "no", "maxdate");
+                showdatetimepicker(".datepickernoval");
+
+                $("form").removeData("validator").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse("form");
+
+                $("#btn_Submit").click(function () {
+                    if ($("#user_detail_form form").valid()) {
+                        $("#loader").show();
+                        dateVar = $('#DOB').val();
+
+                        if (dateVar) {
+                            var dsplit = dateVar.split("/");
+                            var dobDate = new Date(dsplit[2], dsplit[1] - 1, dsplit[0]);
+                            var limitDate = new Date(new Date().getYear() - 15, dsplit[1] - 1, dsplit[0]);
+
+                            if (dobDate > limitDate) {
+                                $('#DOB').addClass('input-validation-error');
+
+                                var element = $("span[data-valmsg-for='DOB']");
+
+                                element.removeClass('field-validation-valid').addClass('field-validation-error');
+                                element.html("<span for='DOB' class>Age not limit not met.</span>");
+                                return;
+                            }
+                        }
+
+                        dateVar = $('#DateJoinded').val();
+
+                        if (dateVar) {
+                            var dsplit = dateVar.split("/");
+                            var fromDate = new Date(dsplit[2], dsplit[1] - 1, dsplit[0]);
+
+                            dateVar = $('#DateLast').val();
+                            if (dateVar) {
+                                dsplit = dateVar.split("/");
+                                var toDate = new Date(dsplit[2], dsplit[1] - 1, dsplit[0]);
+
+                                if (fromDate >= toDate) {
+                                    $('#DateLast').addClass('input-validation-error');
+
+                                    var element = $("span[data-valmsg-for='DateLast']");
+
+                                    element.removeClass('field-validation-valid').addClass('field-validation-error');
+                                    element.html("<span for='DateLast' class>Date Last should be greater than DATE JOINED.</span>");
+                                    return;
+                                }
+                            }
+                        }
+
+                        var model = $("#user_detail_form form").serialize();
+                        $.ajax({
+                            url: $(".create_or_update").val() == 0 ? '@Url.Action("Create")' : '@Url.Action("Update")',
+                            type: "post",
+                            dataType: 'json',
+                            data: model,
+                            error: function (data) {
+                                $("#loader").hide();
+                                alert("Some Error Occured Please Reload the page.")
+                            },
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    alert(data.responseText);
+                                    window.location.reload();
+                                }
+                                else {
+                                    $("#loader").hide();
+                                    $("#add_or_edit").html(data.responseText);
+                                }
+
+                            }
+                        })
+                    }
+                })
+            })
+        </script>
+
+
+
+

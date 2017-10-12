@@ -1,0 +1,49 @@
+﻿<div id="work_order_details_form">
+    @model Hm.Admin.Models.WorkOrder.WorkOrderModel
+
+    <div style="float: right; margin-right: 5px; margin-bottom: 5px;"><input class="button" value="Add" id="new_detailsInsert"></div>
+    @if (Model.WorkOrderDetails.Count > 0)
+    {
+        <table cellspacing="0" cellpadding="0" width="100%">
+            <thead>
+                <tr>
+                    <td>Description </td>
+                    <td>Account Code</td>
+                    <td style="text-align:center;">Price </td>
+                    <td style="text-align:center;">Qty</td>
+                    <td style="text-align:center;">Amount</td>
+                </tr>
+            </thead>
+            @for (var i = 0; i < Model.WorkOrderDetails.Count; i++)
+            {
+                <tr>
+                    <td>@Html.HiddenFor(a => Model.WorkOrderDetails[i].WorkOrderID)
+                    @Html.TextBoxFor(a => Model.WorkOrderDetails[i].Description, new { @Style = "width:100%; " })</td>
+                    <td>@Html.DropDownListFor(a => Model.WorkOrderDetails[i].AccountCode, Model.WorkOrderDetails[i].AccountCodeList, new { @Style = "width:100%; " })</td>
+                    <td style="text-align:center">@Html.TextBoxFor(a => Model.WorkOrderDetails[i].Price, new { @Style = "width:60px; text-align:right;" }) </td>
+                    <td style="text-align:center">@Html.TextBoxFor(a => Model.WorkOrderDetails[i].Quantity, new { @Style = "width:60px; text-align:right;" })</td>
+                    <td style="text-align:center">@Html.TextBoxFor(a => Model.WorkOrderDetails[i].Amount, new { @Style = "width:60px; text-align:right;" })</td>
+                </tr>
+            }
+        </table>
+    }
+    <script>
+        $(document).ready(function () {
+            $("#new_detailsInsert").click(function () {
+               
+                model = $("#work_detail_form form").serialize();
+                if ($("#work_detail_form form").valid()) {
+                    $.ajax({
+                        url: '@Url.Action("NewDtails")',
+                        type: "post",
+                        dataType: 'html',
+                        data: model,
+                        success: function (data) {
+                            $("#add_or_editTest").html(data);
+                        }
+                    })
+                }
+            })          
+        });
+    </script>
+</div>

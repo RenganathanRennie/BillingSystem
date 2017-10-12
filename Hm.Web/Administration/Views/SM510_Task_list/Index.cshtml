@@ -1,0 +1,51 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Hm.Admin.Helper;
+@{
+    ViewBag.Title = "Task Details Page";
+    Layout = "~/Administration/Views/Shared/_LayoutNew.cshtml";
+}
+<div class="sub_title" style=" padding-left: 0px; font-size: 20px;">
+    Task Details
+</div>
+
+<div id="tabs" style="width: 970px;">
+    <ul>
+        <li><a href="@Url.Action("List")">List</a></li>
+        <li><a href="#tab-2">Create / Update</a></li>      
+    </ul>
+
+    <div id="tab-2">
+        @Html.Action("Create")
+    </div>
+    <div id="tab-3">
+
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")
+
+<style>
+    .control-container label {
+        width: 14% !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $("#tabs").tabs({
+            cache: true,
+            beforeLoad: function (event, ui) {
+                ui.panel.html('Loading ..............');
+            }
+        })     
+    }); 
+
+</script>
+
+
+
+
+
+

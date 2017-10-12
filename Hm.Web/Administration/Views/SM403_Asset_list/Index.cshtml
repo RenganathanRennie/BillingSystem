@@ -1,0 +1,290 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Hm.Admin.Helper;
+@using Hm.Web.Framework.Extention;
+
+@model Hm.Admin.Models.AssetModel.AssetSearchViewModel
+@{
+    ViewBag.Title = "Asset";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+    bool canCreate = Access.ToFunction("SM403", "A");
+    bool canRead = Access.ToFunction("SM403", "V");
+    bool canUpdate = Access.ToFunction("SM403", "M");
+    bool canDelete = Access.ToFunction("SM403", "D");
+}
+<style>
+    .asset_txt_box {
+        font-size: 12px;
+        color: #696969;
+        padding: 1px 5px;
+        margin: 0;
+        font-family: Trebuchet MS, Arial, Helvetica, Verdana, sans-serif;
+        border: 1px solid #ccc;
+        background: #fff;
+        width: 321px;
+    }
+
+    #divAsset table {
+        border-color: #B9BFD5;
+        border-width: 1px;
+        border-style: Inset;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        #divAsset table th, #divAsset table td {
+            border-color: #b9bfd5;
+            BORDER-BOTTOM: #B9BFD5 1px solid;
+            BORDER-RIGHT: #B9BFD5 1px solid;
+            padding-left: 4px;
+            padding-right: 4px;
+            BORDER-RIGHT: #B9BFD5 1px solid;
+            height: 30px;
+        }
+
+    .ctrl_image {
+        width: 20px;
+    }
+</style>
+
+<div class="content_body" align="center">
+    <div style="width: 1217px;" align="center">
+        <div style="padding-top: 10px; width: 966px;">
+            <div class="content_top">
+            </div>
+            <div id="contentmiddle" class="content_middle">
+                <div>
+                    <div class="sub_title">
+                        Asset List
+                    </div>
+                    <div id="User_Role_index_form">
+                        @using (Html.BeginForm("Index", "SM403_Asset_list", FormMethod.Get))
+                        {
+                            <div style="border: solid 0px red;">
+                                <div class="common_control_bg" style="height: 64px;">
+                                    <div class="frm_title">
+                                        Filter:
+
+                                    </div>
+                                    <hr>
+                                    <div style="float: left; width: 581px; border: 0px solid blue">
+                                        <div style="padding-left: 10px; padding-top: 5px;">
+                                            <div class="job_lbl_outer" style="width: 70px;">
+                                                <label title="Asset Name">
+                                                    Asset Name:
+                                                </label>
+                                            </div>
+                                            <div style="float: left; padding-left: 10px; height: 25px;">
+                                                @Html.TextBoxFor(model => model.AssetName, new { @class = "asset_txt_box", title = "Asset Name" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div style="float: right; padding-right: 3px; padding-top: 0px">
+                                        <div class="btn_left_outer">
+                                            <input type="submit" name="btn_Search" value="Search" id="btn_Search" title="Click to Search" class="button">
+                                        </div>
+                                        <div class="btn_right_outer">
+                                            <input type="button" name="btn_Clear" value="Clear" id="btn_Clear" title="Click to Clear" onclick="window.location.href  ='@Url.Action("Index")';" class="button">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div id="divAsset" style="width: 920px; border: 0px solid red; margin-top: 5px;">
+
+                        <div class="grid_top_title">
+                            <div style="width: 100%">
+                                <div style="float: left; padding-top: 10px; padding-left: 10px; border: solid 0px red;
+                                            width: 12%;">
+                                    <div style="float: left;">
+                                        Asset List
+                                    </div>
+                                </div>
+                                <div style="float: right; padding-top: 10px; border: solid 0px red;
+                                            width: 08%;">
+                                    <div style="float: right; padding-right: 15px;">                                      
+                                        <div id="divOpenRole" class="update_popup">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="icon_lst">
+                                    <img src="/images/info-icon.png" title="Information" onclick="OpenHelp('@Url.Action("PageHelp", "Common", new { pageName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() })')" />
+                                    <img src="/images/export-excel.png" title="Export To Excel" onclick="exportExcel()" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid_outer" id="grid">
+                            <div>
+                                <table cellspacing="0" cellpadding="15">
+                                    <tbody>
+                                        <tr class="grid_header">
+                                            @if (canUpdate)
+                                            {
+                                                <th title="Edit" class="ctrl_image"> Edit </th>}
+                                            @if (canDelete)
+                                            {
+                                                <th title="Delete" class="ctrl_image"> Del </th>}
+
+                                            <th title="Property Code" style="width:174px">
+                                                Property Code
+                                            </th>
+                                            <th title="Asset Name" style="width:354px">
+                                                Asset Name
+                                            </th>
+                                            <th title="Quantity" style="width:53px">
+                                                Quantity
+                                            </th>
+                                            <th title="Purchase Date">
+                                                Purchase Date
+                                            </th>
+                                            <th title="Warranty End Date">
+                                                Warranty End Date
+                                            </th>
+                                            <th title="Active">
+                                                Active
+                                            </th>
+
+                                        </tr>
+                                        @foreach (var eachData in Model.pagedList)
+                                        {
+                                            <tr>
+                                                @if (canUpdate)
+                                                {
+                                                    <td title="Edit" class="ctrl_image">
+                                                        <input type="image" src="~/images/icon-edit.gif" onclick="loadPartialUI('@Url.Action("Update", new { Id = @eachData.AssetCode })', '#add_or_edit')">
+                                                    </td>
+                                                }
+                                                @if (canDelete)
+                                                {
+                                                    <td class="ctrl_image" title="Delete">
+                                                        <label data-url="@Url.Action("Delete")/@eachData.AssetCode" id="Delete_link">          <input type="image" id="delete_btn" src="~/images/icon-delete.gif" /></label>
+                                                    </td>
+                                                }
+                                                <td title="property Code">
+                                                    <span>@eachData.PropertyCode</span>
+                                                </td>
+                                                <td title="Click to View">
+                                                    <a href="#" style="color:blue;text-underline-position:below;" onclick="loadPartialUI('@Url.Action("View", new { Id = @eachData.AssetCode })', '#add_or_edit')"> <span>@eachData.AssetName</span> </a>
+                                                </td>
+                                                <td style="text-align:right;" title="Quantity">
+                                                    <span>@eachData.Quantity</span>
+                                                </td>
+                                                <td title="Purchase Date">
+                                                    <span>@eachData.PurchaseDate.FormatDate()</span>
+                                                </td>
+                                                <td title="Warranty Date">
+                                                    <span>@eachData.WarrentyEndDate.FormatDate()</span>
+                                                </td>
+                                                <td title="Active">
+                                                    <span>
+                                                        @{
+                                            if (eachData.IsDeleted == 0)
+                                            {
+                                                <pre>Yes</pre>
+                                            }
+                                            else
+                                            {
+                                                <pre>No</pre>
+                                            }
+                                                        }
+                                                    </span>
+
+                                                </td>
+
+
+
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div style="height: 5px">
+                        </div>
+                        <div id="divPaging">
+                            <div class="grid_bottom_paging">
+                                <div style=" float:left; padding-top: 0px; padding-left: 10px; border: solid 0px red;">
+                                    <div style="float: left;">
+                                        <div style="width: 700px; height: 25px; float: left; border: solid 0px red;">
+                                            @Html.PagedListPager(Model.pagedList, page => Url.Action("Index", new { page, AssetName = Model.AssetName }))
+                                        </div>
+                                        <div style="width: 206px; height: 25px; float: right; border: solid 0px red;">
+                                            <div style="float: right; padding-top: 5px;">
+                                                <span id="UserPaging_lblNoOfSites" class="grid_txtcolor">Showing @Model.PageTotal  Asset(s) of @Model.TotalRecords</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="border: solid 0px red; text-align: left; padding-left: 15px; padding-top:2px; width: 907px; height:4px;">
+                                <span id="UserPaging_lblStatusMessage" class="ErrorStatus"></span>
+                            </div>
+                        </div>
+                        <input name="btnHidden" type="hidden" id="btnHidden">
+                        <div id="add_or_edit"></div>
+                        <div id="View"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="content_bottom">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#btn_Clear").click(function () {
+            $(':input', "#user_index_form form")
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+        });
+
+
+
+        $("#grid #Delete_link").click(function () {
+            if (confirm('Do you wish to delete this')) {
+                var URL = $(this).attr("data-url");
+
+                $.ajax({
+                    url: URL,
+                    type: "post",
+                    dataType: 'json',
+                    data: '',
+                    error: function (data) {
+
+                        alert("Some Error Occured Please Reload the page.")
+
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            alert(data.responseText);
+                            window.location.reload();
+                        }
+                        else {
+                            alert('Error Occured');
+                        }
+
+                    }
+                })
+
+            }
+        });
+
+
+
+
+
+    });
+        </script>
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")

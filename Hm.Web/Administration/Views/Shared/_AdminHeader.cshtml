@@ -1,0 +1,127 @@
+﻿@model Hm.Admin.Models.User.Common.AdminHeaderLink
+@using Hm.Admin.Helper;
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@Model.Company.companyName : @Model.Title</title>
+    @Styles.Render("~/Content/BasicCss")
+    @Styles.Render("~/bundles/Bootstrap")
+    @Scripts.Render("~/bundles/jquery")  
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+    <div id="loader" style="width: 100%; height: 100%; position: fixed; z-index: 1100; background: black; opacity: 0.8; display: none;"><div align="center" style="padding-top:250px;"><img src="~/images/ajax-loader.gif"></div></div>
+    <script type="text/javascript">
+        var globalQTYDecimal = 0;
+        var globalPriceDecimal = 0;
+        var jsonData = JSON.parse(@Html.Raw(Json.Encode(Model.JavascriptInitializer)));     
+        $.each(jsonData, function (i, val) {         
+            if (i == 'globalQTYDecimal') {
+                globalQTYDecimal = val;               
+            }
+            if (i == 'globalPriceDecimal') {              
+                globalPriceDecimal = val;
+            }
+           
+        });
+     
+    var curFunction = '@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString()';
+    var expoetExcelUrl = '@Url.Action("ExportToExcel")';
+
+    </script>
+    <nav class="navbar navbar-default no-margin">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header fixed-brand">          
+            <img src="~/images/Companylogo.png" style=" vertical-align: middle; width: 180px; height: 95px; float: left;">
+           
+        </div><!-- navbar-header-->
+        <div><h2 class="navbar-brand" style="font-size:28px;"> Project Management System</h2></div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">              
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">   
+                       @Model.Company.companyName          
+                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>                       
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>@Model.Company.AddressLine1</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Company details</em>
+                                    </span>
+                                </div>                              
+                                <div>@Model.Company.AddressLine2</div>
+                                <div>@Model.Company.AddressLine3</div>
+                                <div>@Model.Company.City</div>
+                                <div>@Model.Company.Country (@Model.Company.PostCode)</div>
+                                <div>@Model.Company.emailID</div>
+                                <div>@Model.Company.Website</div>
+                                <div style="width:700px;">&nbsp;</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+              
+            
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        @Model.UserName
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="@Url.Action("SignOut", "SA501_Login")"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>            
+          
+        </div><!-- bs-example-navbar-collapse-1 -->
+    </nav>
+
+    <div id="sidebar-wrapper" class="navbar-default" style="position:absolute;">
+        <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+
+            @foreach (var module in Access.GetModules.OrderBy(a => a.Module_sequence))
+            {
+                <li class="@if (string.Format("{0}_tabs", module.Id) == Model.ActiveModule) { @Html.Raw("active"); }">
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa @module.Icon fa-stack-1x "> </i></span> @module.ModuleName </a>
+                    <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                        @foreach (var menu in Access.GetMenus.Where(a => a.Sys_MenuMaster.menu_Module == module.Id).OrderBy(a => a.Sys_MenuMaster.menu_Sequence))
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", @menu.FunctionName)" title="@Html.Raw(menu.Sys_MenuMaster.menu_Name) Info">
+                                    <span class="fa-stack fa-lg pull-left">
+                                        <i class="fa @menu.Sys_MenuMaster.Icon fa-stack-1x "></i>
+                                    </span>@menu.Sys_MenuMaster.menu_Name
+                                </a>
+                            </li>
+
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div id="wrapper" style="padding-bottom: 100px;">
+        <!-- Sidebar -->
+        <!-- /#sidebar-wrapper -->
+
+
+
+
+

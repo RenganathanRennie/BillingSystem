@@ -1,0 +1,497 @@
+﻿@model Hm.Admin.Models.AssetModel.AssetsViewModel
+@using Hm.Web.Framework.Extention;
+<style type="text/css">
+    .field-validation-error, .field-validation-error span {
+        padding-right: 0px;
+    }
+</style>
+<div id="asset_detail_form">
+    @using (Html.BeginForm("Create", "SM403_Asset_list", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.AssetCode, new { @class = "popuproletxtbox create_or_update" })
+        <div class="divHeader" style="height: auto">
+            <div style=" height: 200px auto; width: 100%;">
+                <div class="UIheader" style="margin-bottom: 6px;">
+                    <div style="width:700px; float:left;"> @(Model.AssetCode == null ? "Create Asset" : "Update Asset - " + Model.AssetName)</div>
+                    <div style="width:50px; padding-right:15px;float:right;"><a href="#" id="btn_AddNew" class="btn_addnew" title="Click to Hide" onclick="window.location.reload()"> Hide </a></div>
+                </div>
+                <div style="float: left; width: 64%; ">
+                    @if (Model.AssetCode != null) { 
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top: 11px">
+                            <label title="Asset Id">
+                                Asset Code
+                            </label>
+                        </div>
+                        <div class="divTextbox">
+                            @Html.TextBoxFor(model => model.AssetCode, new { disabled = "disabled", @readonly = "readonly", title = "Asset Id", @style = "width: 101px" })
+                            (This Id will be Generated Automatically)
+                        </div>
+                    </div>
+                    }
+
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top: 11px">
+                            <label title="Property Name">
+                                Property
+                            </label>
+                            <span class="spanClass">*</span>
+                        </div>
+                        <div class="divTextbox" style="width: 333px !important;">
+                            @Html.DropDownListFor(model => model.PropertyCode, Model.PropertyList, "- Select property to insert asset - ", new { @class = "popuprole_cmbbox fulwdth", title = "Property Name" })<br />
+                            @Html.ValidationMessageFor(model => model.PropertyCode)
+                        </div>
+                    </div>
+                  <div class="divfieldrightrow">
+
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Asset Name">
+                                Asset Name
+                            </label>
+                            <span class="spanClass">*</span>
+                        </div>
+                        <div class="divTextbox" style="width: 333px !important;">
+                            @Html.TextBoxFor(model => model.AssetName, new { @class = "popuproletxtbox1 fulwdth", title = "Asset Name" })
+                            @Html.ValidationMessageFor(model => model.AssetName)
+                        </div>
+                    </div>
+
+                    <div class="divfieldrightrow">
+
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Quantity">
+                                Quantity
+                            </label>
+                        </div>
+                        <div class="divTextbox">
+                            @Html.TextBoxFor(model => model.Quantity, new { @class = "popuproletxtbox", style = "width:45px;text-align:right;", title = "Quantity" })
+
+                        </div>
+                        <div class="Validationdiv">
+                            @Html.ValidationMessageFor(model => model.Quantity)
+                        </div>
+                    </div>
+
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Model Number">
+                                Model Number
+                            </label>
+                        </div>
+
+                        <div class="divTextbox">
+
+
+                            @Html.TextBoxFor(model => model.ModelNumber, new { @class = "popuproletxtbox", title = "Model Number" })
+                        </div>
+                    </div>
+
+
+                    <div class="Validationdiv" style="padding-left: 155px; ">
+                        @Html.ValidationMessageFor(model => model.ModelNumber)
+                    </div>
+                    <div class="divfieldrightrow">
+
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Serial Number">
+                                Serial Number
+                            </label>
+
+                        </div>
+                        <div class="divTextbox">
+
+                            @Html.TextBoxFor(model => model.SerialNumber, new { @class = "popuproletxtbox ", title = "Serial Number" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="Validationdiv" style="padding-left: 155px; ">
+                        @Html.ValidationMessageFor(model => model.SerialNumber)
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Purchase Date">
+                                Purchase Date
+                            </label>
+                            <span class="spanClass">*</span>
+                        </div>
+                        <div class="divTextbox">
+
+                            @Html.TextBoxFor(model => model.PurchaseDate, @Model.PurchaseDate.FormatDate(), new { @class = "popuproletxtbox datepicker", @style = "width:127px", title = "Purchase Date" })
+
+                        </div>
+                    </div>
+                    <div class="Validationdiv" style="padding-left: 209px; ">
+                        @Html.ValidationMessageFor(model => model.PurchaseDate)
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Warranty Date">
+                                Warranty End Date
+                            </label>
+                            <span class="spanClass">*</span>
+                        </div>
+                        <div class="divTextbox">
+                            @Html.TextBoxFor(model => model.WarrentyEndDate, @Model.WarrentyEndDate.FormatDate(), new { @class = "popuproletxtbox datepicker", @style = "width:127px", title = "Warranty Date" })
+
+
+
+                        </div>
+                    </div>
+                    <div class="Validationdiv" style="padding-left: 209px;">
+                        @Html.ValidationMessageFor(model => model.WarrentyEndDate)
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Price">
+                                Price
+                            </label>
+                            <span class="spanClass">*</span>
+                        </div>
+                        <div class="divTextbox">
+                            @Html.TextBoxFor(model => model.Price, new { @class = "popuproletxtbox", style = "text-align:right;", title = "Price" })
+
+
+
+                        </div>
+                    </div>
+                    <div class="Validationdiv" style="padding-left: 207px; ">
+                        @Html.ValidationMessageFor(model => model.Price)
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Supplier Name">
+                                Supplier Name
+                            </label>
+                            <span class="spanClass">*</span>
+                        </div>
+                        <div class="divTextbox">
+                            @Html.TextBoxFor(model => model.SupplierName, new { @class = "popuproletxtbox", title = "Supplier Name" })
+
+
+                        </div>
+
+                    </div>
+                    <div class="Validationdiv" style="padding-left: 206px; ">
+                        @Html.ValidationMessageFor(model => model.SupplierName)
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Purchase Invoice Number">
+                                Purchase Invoice No
+                            </label>
+
+                        </div>
+                        <div class="divTextbox">
+                            @Html.TextBoxFor(model => model.PurchaseInvoiceNo, new { @class = "popuproletxtbox", title = "Purchase Invoice Number" })
+
+
+
+                        </div>
+                    </div>
+                    <div class="Validationdiv" style="padding-left: 155px; ">
+                        @Html.ValidationMessageFor(model => model.PurchaseInvoiceNo)
+                    </div>
+
+                    <div class="Validationdiv" style="padding-left: 155px; ">
+                        @Html.ValidationMessageFor(model => model.Comments)
+                    </div>
+                    <div class="divfieldrightrow" style="float:left;padding-top:10px;padding-bottom:4px;">
+
+
+                        <label style="font-size:large;font-weight:100" title="Maintenance">
+                            Maintenance :
+                        </label>
+
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class=" popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Vendor Name">
+                                Vendor Name
+                            </label>
+
+                        </div>
+                        <div class="divTextbox">
+                            @Html.TextBoxFor(model => model.VendorName, new { @class = "popuproletxtbox1", title = "Vendor Name" })
+                        </div>
+                    </div>
+                    <div class="Validationdiv" style="padding-left: 155px; ">
+                        @Html.ValidationMessageFor(model => model.VendorName)
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+                            <label title="Start Date">
+                                Start Date
+                            </label>
+
+                        </div>
+                        <div class="divTextbox">
+                            @Html.TextBoxFor(model => model.StartDate, @Model.StartDate.FormatDate(), new { @class = "popuproletxtbox datepicker", @style = "width:127px", title = "Start Date" })
+
+                        </div>
+
+                    </div>
+                    <div class="Validationdiv" style="padding-left: 155px; ">
+                        @Html.ValidationMessageFor(model => model.StartDate)
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="End Date">
+                                End Date
+                            </label>
+
+                        </div>
+                        <div class="divTextbox">
+
+                            @Html.TextBoxFor(model => model.EndDate, @Model.EndDate.FormatDate(), new { @class = "popuproletxtbox datepicker", @style = "width:127px", title = "End Date" })
+
+                        </div>
+                    </div>
+
+                    <div class="Validationdiv" style="padding-left: 155px; ">
+                        @Html.ValidationMessageFor(model => model.EndDate)
+                    </div>
+                    <div class="divfieldrightrow">
+                        <div class="popup_lbl_outer1" style="padding-top:10px;">
+
+                            <label title="Comments">
+                                Comments
+                            </label>
+                        </div>
+                        <div class="divTextbox" style="height:80px;">
+
+                            @Html.TextAreaFor(model => model.Comments, new { @class = "popuproletxtbox1", style = "height:80px;", title = "Comments" })
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div style="float: left; width: 35%;">
+                    <div style="padding-left: 0px; padding-top: 0px; clear: both;">
+                        <div class="divspanlbl" style="padding-top:10px;">
+
+                            <label title="Asset Photo">
+                                Asset Image
+                            </label>
+                        </div>
+                        <div style="float: left; padding-left: 5px; height: 25px; padding-top: 0px;">
+                            <div class="divTextbox">
+                                @Html.TextBoxFor(model => model.ImagePath, new { @class = "popuproletxtbox2 imageUpload", type = "file", style = "padding:0px;", title = "Asset Photo" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="float: right; padding-right: 65px; height: 120px; padding-top: 10px; ">
+                        <img src="@if (Model.ImagePath != null && Model.ImagePath != "")
+                                  {@Url.Content(@Model.ImagePath); }" class="popuproletxtbox" style="padding:0px; height:132px;" id="imagePrev" />
+                    </div>
+
+                    <div id="uploadedFile">
+                    </div>
+                    <div id="fileHeaderError" style="display: none;">Please enter file header.</div>
+
+                </div>
+
+                <div class="divFooter" id="actn_btn">
+                    <div class="divFooterStyle">
+                        <div class="divStyleForFooter">
+                            <div class="submit">
+                                @if (Model.AssetCode == null || Model.AssetCode == "")
+                                {
+                                    <input type="button" name="btn_Submit" value="Save" id="btn_Submit" title="Click to Save " class="button">
+                                }
+                                else
+                                {
+                                    <input type="button" name="btn_Submit" value="Update" id="btn_Submit" title="Click to Update " class="button">
+                                }
+                            </div>
+                            <div class="divClear">
+                                <input type="reset" name="btnUserClear" id="btnUserClear" value="Clear" title="Click to Clear" class="button">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divfieldrightrow" style="border-bottom: solid 1px #8cbfe7; color: grey; padding-top: 10px;">
+                    <div class="modified-info">
+                        <div>
+                            <ul class="user"><li>Created By:</li><li>@Html.DisplayFor(model => model.CreateName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Created By" })</li></ul>
+                            <ul class="date"><li>Created Date Time:</li><li>@Html.DisplayFor(model => model.CreateDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" })  </li></ul>
+                        </div>
+                        <div>
+                            <ul class="user"><li>Modified By:</li><li> @Html.DisplayFor(model => model.ModifyName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Modified By" }) </li></ul>
+                            <ul class="date"><li>Modified Date Time:</li><li>@Html.DisplayFor(model => model.ModifyDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" }) </li></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    var newList = new Array();
+    newList['files'] = new Array();
+    newList['headerName'] = new Array();
+    var validDocFile = /(\.pdf|\.xls|\.xlsx|\.doc|\.docx)$/i;
+    var validImageFile = /(\.jpg|\.jpeg|\.bmp|\.gif|\.png)$/i;
+    $(document).ready(function () {
+
+        $("form").removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("form");
+        (function ($) {
+            $.fn.uploadAttach = function (action) {
+                var uploadCtrl = $(this);
+                var formData = new FormData();
+                if (action === "document") {
+                    $(this).change(function () {
+                        if ($(uploadCtrl).val().trim() == "") {
+                            $("#fileHeaderError").fadeIn();
+                            $(uploadCtrl).val("");
+                            return;
+                        }
+                        else {
+                            $("#fileHeaderError").fadeOut();
+                        }
+                        var files = $(this).get(0).files;
+                        for (var i = 0; i < files.length; i++) {
+                            if (!validDocFile.exec(files.item(i).name)) {
+                                $("#fileHeaderError").html("Only 'pdf','xls','xlsx','doc','docx'");
+                                $("#fileHeaderError").fadeIn();
+                                return;
+                            }
+                            newList['files'].push(files.item(i));
+                            newList['headerName'].push($(uploadCtrl).val().trim());
+                        }
+                        populateGrid();
+                        $(uploadCtrl).val("");
+                        $(uploadCtrl).prev().val("");
+                        formData.append('files', newList);
+                    });
+                }
+                if (action === "image") {
+                    $(this).change(function () {
+                        if (!validImageFile.exec($(this).get(0).files[0].name)) {
+                            $(this).val("");
+                            alert("Upload Only 'jpg','jpeg','bmp','gif','png'");
+                            return;
+                        }
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#imagePrev').attr('src', e.target.result);
+                        };
+                        reader.onerror = function (event) {
+                            alert("File could not be read! Code " + event.target.error.code);
+                        };
+                        reader.readAsDataURL($(this).get(0).files[0]);
+                        $('#imagePrev').css('display', 'none');
+                        $('#imagePrev').fadeIn(2000);
+                    });
+                }
+                function populateGrid() {
+                    var textFile = "";
+                    for (var j = 0; j < newList['files'].length; j++) {
+                        // alert(newList['files'][j]);
+                        textFile += "<ul><li class='fileHeade'>" + newList['files'][j].name + "</li><li class='fileName'>" + newList['headerName'][j] + "</li><li class='removefile' data-index='" + j + "'>Remove</li></ul>";
+                    }
+                    $("#uploadedFile").html('');
+                    $("#uploadedFile").append(textFile);
+                    $('.removefile').click(function () {
+                        newList['files'].splice($(this).data('index'), 1);
+                        newList['headerName'].splice($(this).data('index'), 1);
+                        populateGrid();
+                    })
+                }
+
+                $("#btn_Submit").unbind().click(function () {
+                    if ($("#asset_detail_form form").valid()) {
+                        $("#loader").show();
+                        var update = '@Url.Action("Update")';
+                        var create = '@Url.Action("Create")';
+                        var URL = '';
+                        if ($(".create_or_update").val() == "" || $(".create_or_update").val() == "0") {
+                            URL = create;
+                        }
+                        else {
+                            URL = update;
+                        }
+                        var model = $("#asset_detail_form form").serializeArray();
+                        var fd = new FormData();
+                        if ($("#ImagePath").get(0).files.length > 0) {
+                            fd.append('ImagePath', $("#ImagePath").get(0).files[0]);
+                        }
+                        $.each(model, function (key, input) {
+                            fd.append(input.name, input.value);
+                        });
+
+                        for (var k = 0; k < newList['files'].length; k++) {
+                            fd.append('attachFiles' + k, newList['files'][k]);
+                            fd.append('HeaderName[' + newList['files'][k].name + ']', newList['headerName']);
+
+                        }
+                        $.ajax({
+                            url: URL,
+                            type: "post",
+                            dataType: 'json',
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            error: function (data) {
+                                $("#loader").hide();
+                                alert("Some Error Occured Please Reload the page.")
+
+                            },
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    alert(data.responseText);
+                                    window.location.reload();
+                                }
+                                else {
+                                    $("#loader").hide();
+                                    $("#add_or_edit").html(data.responseText);
+                                }
+
+                            }
+                        })
+                    }
+                })
+
+            };
+
+        }(jQuery));
+
+
+        $(".fileDocuments").uploadAttach("document");
+        $(".imageUpload").uploadAttach("image");
+
+        showdatetimepicker(".datepicker");
+        $("#btnUserClear").click(function () {
+            //$(':input', "#user_detail_form form")
+            //    .not(':button, :submit, :reset, :hidden')
+            //    .val('')
+            //    .removeAttr('checked')
+            //    .removeAttr('selected');
+            if ($(".create_or_update").val() == "" || $(".create_or_update").val() == "0") {
+                $('#imagePrev').attr('src', '');
+            }
+
+        })
+
+
+    })
+</script>
+
+

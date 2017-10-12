@@ -1,0 +1,74 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+* {
+
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+}
+
+  .center
+        {
+            width: 60%;
+            margin: 20px auto 0 auto;
+        }
+        
+        .marginbot
+        {
+            margin-bottom: 0px;
+        }
+        
+        ul.list li
+        {
+            list-style-type: none;
+            margin-left: 20px;
+        }
+        
+        ul.tabs
+        {
+            /*width: 100%;*/
+            overflow: hidden;
+        }
+        
+        ul.tabs li
+        {
+            list-style-type: none;
+            display: block;
+            float: left;
+            color: #fff;
+            padding: 8px;
+            margin-right: 2px;
+            border-bottom: 2px solid #2f2f2f;
+            background-color: #4F556B;
+            -moz-border-radius: 6px 6px 0 0;
+            -webkit-border-radius: 6px 6px 0 0;
+            border-radius: 6px 6px 0 0;
+            -webkit-transition: background-color 0.2s ease-out;
+            -moz-transition: background-color 0.2s ease-out;
+            -o-transition: background-color 0.2s ease-out;
+            transition: background-color 0.2s ease-out;
+            cursor: pointer;
+        }
+        
+        ul.tabs li:hover
+        {
+            background-color: #FF6D00;
+        }
+        
+        ul.tabs li.current
+        {
+            border-bottom: 2px solid #FF6D00;
+            background-color: #FF6D00;
+           
+        }
+        
+        .tabscontent
+        {
+            border-top: 2px solid #FF6D00;
+            
+            display: none;
+            width: 100%;
+            text-align: justify;
+             margin-top:-12px;
+        }

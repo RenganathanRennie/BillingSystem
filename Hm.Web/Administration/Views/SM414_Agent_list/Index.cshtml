@@ -1,0 +1,297 @@
+﻿@model Hm.Admin.Models.Agent.AgentSearchViewModel
+@using PagedList;
+@using PagedList.Mvc;
+@using Hm.Admin.Helper;
+@{
+    ViewBag.Title = "Agent";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+    bool canCreate = Access.ToFunction("SM414", "A");
+    bool canRead = Access.ToFunction("SM414", "V");
+    bool canUpdate = Access.ToFunction("SM414", "M");
+    bool canDelete = Access.ToFunction("SM414", "D");
+}
+<style type="text/css">
+    #divGrid table .ctrl_image {
+        width: 19px;
+    }
+</style>
+
+<style type="text/css">
+    #divGrid table th, #divGrid table td {
+        width: auto;
+    }
+</style>
+<div class="content_body" align="center">
+    <div style="width: 1217px;" align="center">
+        <div style="padding-top: 10px; width: 966px;">
+            <div class="content_top">
+            </div>
+            <div id="contentmiddle" class="content_middle">
+                <div>
+                    <div class="sub_title">
+                        Agent Master
+                    </div>
+                    <div id="Agent_index_form">
+                        @using (Html.BeginForm("Index", "SM414_Agent_list", FormMethod.Get))
+                        {
+                            <div style="border: solid 0px red;">
+                                <div class="common_control_bg" style="height: 64px;">
+                                    <div class="frm_title">
+                                        Filter:
+
+                                    </div>
+                                    <hr>
+                                    <div style="float: left;  border: 0px solid blue">
+                                        <div style="padding-left: 5px; padding-top: 5px;">
+                                            <div style="float: left;  height: 25px;">
+                                                @Html.TextBoxFor(model => model.AgentNickName, new { @class = "txt_box", placeholder = "Agent Nick Name", Title = "Agent Nick Name" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="float: left;  border: 0px solid blue">
+                                        <div style="padding-left: 5px; padding-top: 5px;">
+
+                                            <div style="float: left;  height: 25px;">
+                                                @Html.TextBoxFor(model => model.AgentFullName, new { @class = "txt_box", style = "width:240px;", placeholder = "Agent Full Name", Title = "Agent Full Name" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="float: left;  border: 0px solid blue">
+                                        <div style="padding-left: 5px; padding-top: 5px; margin-right:0px;">
+
+                                            <div style="float: left;  height: 25px;">
+                                                @Html.TextBoxFor(model => model.Email, new { @class = "txt_box", style = "width:236px;", placeholder = "Email id", Title = "Email ID" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div style="float: left;  border: 0px solid blue">
+                                        <div style="padding-left: 5px; padding-top: 5px; margin-right:0px;">
+
+                                            <div style="float: left;  height: 25px;">
+                                                @Html.TextBoxFor(model => model.Mobile, new { @class = "txt_box", placeholder = "Mobile", Title = "Mobile" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="float: right; padding-right: 3px; padding-top: 0px;">
+                                        <div class="btn_left_outer">
+                                            <input type="submit" name="btn_Search" value="Search" id="btn_Search" title="Click to Search" class="button">
+                                        </div>
+                                        <div class="btn_right_outer">
+                                            <input type="button" name="btn_Clear" value="Clear" onclick="window.location.href  = '@Url.Action("index")';" id="btn_Clear" title="Click to Clear" class="button">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div id="divGrid" style="width: 920px; border: 0px solid red; margin-top: 5px;">
+                    <div class="grid_top_title">
+                        <div style="width: 100%">
+                            <div style="float: left; padding-top: 10px; padding-left: 10px; border: solid 0px red;
+                                            width: 12%;">
+                                <div style="float: left;">
+                                    Agent Listings
+                                </div>
+                            </div>
+                            <div style="float: right; padding-top: 10px; border: solid 0px red;
+                                            width: 8%;">
+                                <div style="float: right; padding-right: 15px;">                                   
+                                    <div id="divOpen" class="update_popup">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon_lst">
+                                <img src="/images/info-icon.png" title="Information" onclick="OpenHelp('@Url.Action("PageHelp", "Common", new { pageName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() })')" />
+                                <img src="/images/export-excel.png" title="Export To Excel" onclick="exportExcel()" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid_outer" id="grid">
+                        <div>
+                            <table cellspacing="0" cellpadding="15">
+                                <tbody>
+                                    <tr class="grid_header">
+
+                                        @if (canUpdate)
+                                        {
+                                            <th class="ctrl_image"> Edit </th>
+                                        }
+                                        @if (canDelete)
+                                        {
+                                            <th class="ctrl_image"> Del </th>
+                                        }
+
+                                        <th title="Agent Nick Name">
+                                            Agent Nick Name
+                                        </th>
+                                        <th title="Agent Full Name">
+                                            Agent Full Name
+
+                                        </th>
+                                        <th title="Email Id">
+                                            Email
+                                        </th>
+                                        <th title="Mobile">
+                                            Mobile
+                                        </th>
+                                        <th title="Agency Name">
+                                            Agency Name
+                                        </th>
+                                    </tr>
+                                    @foreach (var eachAgent in Model.GridData)
+                                    {
+                                        <tr>
+                                            @if (canUpdate)
+                                            {
+                                                <td class="ctrl_image">
+                                                    <input type="image" src="~/images/icon-edit.gif" title="Update Agent" onclick="loadPartialUI('@Url.Action("Update", new { id=@eachAgent.id })', '#add_or_edit' )">
+                                                </td>
+                                            }
+                                            @if (canDelete)
+                                            {
+                                                <td class="ctrl_image">
+                                                    <input type="image" title="Delete Agent" src="~/images/icon-delete.gif" onclick="DeleteAction('@eachAgent.id')">
+                                                </td>
+                                            }
+
+                                            <td style="width:100px">
+                                                <span title="Agent Nick Name">@eachAgent.AgentNickName</span>
+                                            </td>
+                                            <td style="width:200px">
+                                                <a href="#" style="color:blue" title="Agent Full Name" onclick="loadPartialUI('@Url.Action("View", new { id=@eachAgent.id })', '#add_or_edit' )"> <span>@eachAgent.AgentFullName</span> </a>
+                                            </td>
+
+                                            <td style="width:60px">
+                                                <a href="mailto:@eachAgent.Email" title="Email ID" class="overrite_a">
+                                                    @eachAgent.Email
+                                                </a>
+                                            </td>
+                                            <td align="right" style="width:55px">
+                                                <span title="Mobile">@eachAgent.Mobile</span>
+                                            </td>
+                                            <td style="width:162px">
+                                                <span title="Agency Name">@eachAgent.AgencyName</span>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+
+
+                    <div style="height: 5px">
+                    </div>
+                    <div id="divPaging">
+                        <div class="grid_bottom_paging">
+                            <div style=" float:left; padding-top: 0px; padding-left: 10px; border: solid 0px red;">
+                                <div style="float: left;">
+                                    <div style="width: 700px; height: 25px; float: left; border: solid 0px red;">
+                                        @Html.PagedListPager(Model.GridData, page => Url.Action("Index", new { page, NickName = Model.AgentNickName, FullName = Model.AgentFullName, Email = Model.Email, Mobile = Model.Mobile, AgencyName = Model.AgencyName }))
+                                    </div>
+                                    <div style="width: 206px; height: 25px; float: right; border: solid 0px red;">
+                                        <div style="float: right; padding-top: 5px;">
+                                            <span id="UserPaging_lblNoOfSites" class="grid_txtcolor">Showing @Model.PageTotal Agent(s) of @Model.TotalRecords</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: solid 0px red; text-align: left; padding-left: 15px; padding-top:2px; width: 907px; height:4px;">
+                            <span id="UserPaging_lblStatusMessage" class="ErrorStatus"></span>
+                        </div>
+
+                    </div>
+                    <input name="btnHidden" type="hidden" id="btnHidden">
+                    <div id="add_or_edit"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content_bottom">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function DeleteAction(delId) {
+        var con = confirm("Do you wish to delete this");
+        if (con) {
+            $.ajax({
+                url: '@Url.Action("Delete")',
+                type: "post",
+                dataType: 'json',
+                data: { id: delId },
+                error: function (data) {
+                    alert("Some Error Occured Please Reload the page.")
+                },
+                success: function (data) {
+                    alert(data.responseText);
+                    window.location.reload();
+                }
+            })
+        }
+    }
+    $(document).ready(function () {
+        $("#btn_Clear").click(function () {
+            $(':input', "#Agent_index_form form")
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
+        })
+
+        openPopUp();
+
+        //Delete AJAX
+
+        $("#grid #Delete_link").click(function () {
+            if (confirm('Do you want to delete?')) {
+                var URL = $(this).attr("data-url");
+                $("#loader").show();
+
+                $.ajax({
+                    url: URL,
+                    type: "get",
+                    dataType: 'json',
+                    data: '',
+                    error: function (data) {
+
+                        alert("Some Error Occured Please Reload the page.")
+
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            alert('Deleted');
+                            window.location.reload();
+                        }
+                        else {
+
+                        }
+
+                    }
+                })
+
+            }
+        });
+        //Delete AJAX
+
+    });
+
+    function openPopUp() {
+        OpenPopup('#btn_AddNew', '#divOpen', '@Url.Action("Create")', '350', 'Add Agent');
+    }
+
+</script>
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")
+
+

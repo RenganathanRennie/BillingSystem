@@ -1,0 +1,133 @@
+﻿@using Hm.Admin.Helper;
+@using Hm.Web.Framework.Extention;
+@model Hm.Admin.Models.WorkOrder.SearchWorkOrderModel
+@{
+
+    bool canCreate = Access.ToFunction("SM511", "A");
+    bool canRead = Access.ToFunction("SM511", "V");
+    bool canUpdate = Access.ToFunction("SM511", "M");
+    bool canDelete =Access.ToFunction("SM511", "D");
+    }
+<div id="divGrid" style="width: 920px; border: 0px solid red; margin-top: 5px;">
+
+    <div class="grid_top_title">
+        <div style="width: 100%">
+            <div style="float: left; padding-top: 10px; padding-left: 10px; border: solid 0px red;
+                                            width: 40%;">
+                <div style="float: left;">
+                    Work Order Listings
+                </div>
+            </div>
+            <div style="float: right; padding-top: 10px;  border: solid 0px red;
+                                            width: 8%;">
+                <div style="float: right; padding-right: 15px;">                                       
+                    <div id="divOpenUser" class="update_popup">
+                    </div>
+                </div>
+            </div>
+            <div class="icon_lst">
+                <img src="/images/info-icon.png" title="Information" class="info_msg" onclick="OpenHelp('@Url.Action("PageHelp", "Common", new { pageName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() })')" />
+                <img src="/images/export-excel.png" title="Export To Excel" onclick="exportExcel()" />
+            </div>
+        </div>
+    </div>
+    <div class="grid_outer" id="grid">
+        <div>
+            <table cellspacing="0" cellpadding="15">
+                <tbody>
+                    <tr class="grid_header">
+
+                        <th class="ctrl_image" title="Edit"> Edit </th>
+
+                        <th class="ctrl_image" title="Delete"> Del </th>
+
+                        <th title="User ID">
+                            Work Order
+                        </th>
+                        <th title="Full Name">
+                            <a href="">
+                                Unit Details
+                            </a>
+                        </th>
+
+                        <th title="Mobile Number">
+                            Due Date Range
+                        </th>
+                        <th title="Email Id">
+                            Status
+                        </th>
+                        <th title="Email Id">
+                            Vendor
+                        </th>
+                        <th title="Email Id">
+                            Amount
+                        </th>
+                    </tr>
+                    @foreach (var eachData in @Model.WorkOrderPagedList)
+                    {
+                        <tr>
+                            <td style="width:50px; text-align:center;"> <input type="image" src="~/images/icon-edit.gif" onclick="PopulateUpdate('@eachData.WorkOrderCD')"></td>
+                            <td style="width: 50px; text-align: center;"><input type="image" id="delete_btn" src="~/images/icon-delete.gif" /></td>
+                            <td title="Click to View">
+                                <span>@eachData.WorkOrderCD</span>
+                            </td>
+                            <td>
+                                <span>@eachData.App_WorkorderDetail.Sum(a => a.Qty)</span>
+                            </td>
+                            <td style="width: 500px; ">
+                                <span>@eachData.WorkFromDate To @eachData.WorkToDate</span>
+                            </td>
+                            <td>
+                                @eachData.Status
+                            </td>
+                            <td>@eachData.mst_Supplier.SupplierName </td>
+                            <td style="width: 50px; text-align: right;">@eachData.App_WorkorderDetail.Sum(a => a.Amount).FormatCurrenct()</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div style="height: 5px">
+    </div>
+    <div id="divPaging">
+        <div class="grid_bottom_paging">
+            <div style=" float:left; padding-top: 0px; padding-left: 10px; border: solid 0px red;">
+                <div style="float: left;">
+                    <div style="width: 700px; height: 25px; float: left; border: solid 0px red;">
+                        @Html.PagedListPager(Model.WorkOrderPagedList, page => Url.Action("Index", new { page }))
+                    </div>
+                    <div style="width: 206px; height: 25px; float: right; border: solid 0px red;">
+                        <div style="float: right; padding-top: 5px;">
+                            <span id="UserPaging_lblNoOfSites" class="grid_txtcolor"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="border: solid 0px red; text-align: left; padding-left: 15px; padding-top:2px; width: 907px; height:4px;">
+            <span id="UserPaging_lblStatusMessage" class="ErrorStatus"></span>
+        </div>
+        <span id="UserPaging_lblNoOfSites" class="grid_txtcolor"></span>
+    </div>
+    <input name="btnHidden" type="hidden" id="btnHidden">
+    <div id="add_or_edit1"></div>
+</div>
+<script>
+    function PopulateUpdate(workOrder) {
+        $.ajax({
+            url: '@Url.Action("Update")',
+            type: "get",
+            data: { workOrderCD: workOrder },
+            dataType: 'html',
+            success: function (data) {
+                $("#add_or_editTest").html(data);
+                $("#add_or_editTest").fadeIn();
+
+            }
+        })
+    }
+</script>
+

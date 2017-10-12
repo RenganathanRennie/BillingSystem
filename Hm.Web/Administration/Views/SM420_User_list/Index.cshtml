@@ -1,0 +1,36 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using Hm.Admin.Helper;
+@{
+    ViewBag.Title = "User Details Page";
+    Layout = "~/Administration/Views/Shared/_LayoutNew.cshtml";
+    bool canCreate = Access.ToFunction("SM420", "A");
+    bool canRead = Access.ToFunction("SM420", "V");
+    bool canUpdate = Access.ToFunction("SM420", "M");
+    bool canDelete = Access.ToFunction("SM420", "D");
+}
+
+<div id="tabs" style="width: 970px;">
+    <ul>
+        <li><a href="@Url.Action("List")">List</a></li>
+        <li><a href="@Url.Action("Create")">Create / Update</a></li>
+    </ul>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")
+
+<script>
+    $(document).ready(function () {
+        $("#tabs").tabs({
+            cache: true,
+            beforeLoad: function (event, ui) {
+                ui.panel.html('Loading ..............');
+            }
+        })
+    });
+</script>
+
+
+
+

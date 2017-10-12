@@ -1,0 +1,156 @@
+﻿@using Hm.Admin.Helper;
+@model Hm.Admin.Models.Entry.BLReportModel
+    @{
+        ViewBag.Title = "Reports Listing.";
+        Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+        bool canRead = true;
+        var ledgerCanView = true;
+    }
+
+
+    <div id="tabs" style="width:96%;" class="apt_report">
+    <ul>
+        <li>
+            <a href="#tabs-1">
+                Menu
+            </a>
+        </li>
+        <li>
+            <a href="#tabs-2">
+                Report View
+            </a>
+        </li>
+
+    </ul>
+    <div id="tabs-1">
+        <div class="menu_details">
+            <ul>
+                <li class="first active" onclick="loadPartialUI('@Url.Action("Quotation")', '.report_container')">
+                    Quotation List
+                </li>
+                <li class="middle" onclick="loadPartialUI('@Url.Action("SalesOrder")', '.report_container')">
+                    Sales Order List
+                </li>
+                <li class="middle" onclick="loadPartialUI('@Url.Action("PurchaseOrder")', '.report_container')">
+                    Purchase Order List
+                </li>
+                <li class="last" onclick="loadPartialUI('@Url.Action("GoodsReceipt")', '.report_container')">
+                   Good Receipt
+                </li>
+                <li class="last" onclick="loadPartialUI('@Url.Action("SalesInvoice")', '.report_container')">
+                   Sales Invoice
+                </li>
+            </ul>
+        </div>
+        <div class="report_container">
+
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div id="tabs-2">
+        <iframe id="iframe1" src="@Model.ReportURL" style="width:97% !important" height="900" frameborder="0"></iframe>
+    </div>
+
+    <div style="clear:both;"></div>
+</div>
+    <style>
+        .apt_report .menu_details {
+            float: left;
+            width: 200px;
+        }
+
+        .apt_report .report_container {
+            float: left;
+            width: 600px;
+        }
+
+        .apt_report .menu_details li {
+            background-color: #d3d3d3;
+            height: 30px;
+            text-align: left;
+            padding-left: 10px;
+            padding-top: 5px;
+            font-weight: bold;
+            margin-top: 1px;
+            cursor: pointer;
+            border: solid 1px #A8714B;
+        }
+
+        .apt_report .menu_details .active {
+            background-color: #fff;
+        }
+
+
+        .apt_report .menu_details li:hover {
+            background-color: #F7EFEF;
+        }
+
+        .apt_report .menu_details .first {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .apt_report .menu_details .last {
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .criteria {
+            width: 100%;
+        }
+
+            .criteria .inner_Cont {
+                margin-left: 50px;
+            }
+
+                .criteria .inner_Cont span {
+                    float: left;
+                    font-size: 13px;
+                    margin-left: 10px;
+                    display: inline-table;
+                    text-align: left;
+                }
+
+                .criteria .inner_Cont div {
+                    clear: both;
+                    padding-top: 15px;
+                }
+
+                    .criteria .inner_Cont div span:first-child {
+                        width: 200px;
+                    }
+
+                    .criteria .inner_Cont div .dropdown {
+                        width: 320px;
+                    }
+
+                        .criteria .inner_Cont div .dropdown select {
+                            width: 320px;
+                        }
+
+                .criteria .inner_Cont .report_submit {
+                    float: right;
+                }
+    </style>
+    <script>
+        var showSecondTab = '@Model.PrepareReport';
+        $(document).ready(function () {
+            if (showSecondTab != "False") {
+                $("#tabs").tabs({ active: 1 });
+            }
+            else {
+                $("#tabs").tabs({});
+            }
+            $(".menu_details ul li").click(function () {
+                $(".menu_details ul li").removeClass("active");
+                $(this).addClass("active");
+            });
+
+        })
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+
+

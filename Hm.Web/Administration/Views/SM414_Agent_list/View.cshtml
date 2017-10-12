@@ -1,0 +1,607 @@
+﻿@model Hm.Admin.Models.Agent.AgentViewModel
+@using Hm.Web.Framework.Extention
+<style type="text/css">
+    .crt_btm_dy {
+        border: 0px solid #ccc;
+    }
+
+    #divGrid table th, #divGrid table td {
+        width: auto;
+    }
+
+    .errtitle {
+        color: red;
+    }
+
+    #uploadedFile ul li {
+        border: 0px;
+    }
+
+    .bdr {
+        width: 98%;
+        float: left;
+        border-top: 1px solid #C0C0C0;
+        border-bottom: 1px solid #C0C0C0;
+        margin: 8px 0px 5px 0px;
+    }
+
+        .bdr .popup_lbl_outer {
+            padding-top: 4px;
+        }
+
+    div.popup_lbl_outer label {
+        font-weight: bold;
+    }
+
+    a {
+        color: blue;
+    }
+</style>
+<div id="agent_detail_form">
+    @{
+        var image = @Model.AgentImage == null || @Model.AgentImage == "" ? Model.NoImage : Model.AgentImage;
+    }
+    @using (Html.BeginForm("Create", "SM414_Agent_list", FormMethod.Post))
+    {
+        <div class="divHeader">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id, new { @class = "create_or_update" })
+            @Html.HiddenFor(model => model.CreateUserID)
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.ModifiedDate)
+            @Html.HiddenFor(model => model.ModifiedUserID)
+            @Html.HiddenFor(model => model.AgentCD)
+
+            <div class="accessrgt_add">
+                <div class="UIheader">
+                    @((Model.Id == null || Model.Id == 0) ? "View Agent" : "View Agent")
+                    <div class="hidebtn">
+                        <div class="hidebtn_style">
+                            <a href="#" title="Hide" id="btn_AddNew" class="btn_addnew" onclick="window.location.href  ='@Url.Action("index")';">Hide</a>
+                            <div id="divOpenAgent" class="update_popup">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accessrgt_add">
+                    <div class="column_divid" id="vwlst">
+                        @if (Model.Id != null && Model.Id != 0)
+                        {
+                            <div class="divfieldrightrow">
+                                <div class="popup_lbl_outer">
+
+                                    <label>
+                                        @Html.Label("Agent Code")
+                                    </label>
+                                </div>
+                                <div class="divTextbox">
+                                    @Html.DisplayFor(model => model.AgentCD, new { @class = "agenttxtbox", @disabled = "true", @tooltip = "Agent Code" })
+                                </div>
+
+                            </div>
+                        }
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    @Html.Label("Agent Type")
+                                </label>
+                            </div>
+                            <div class="divTextbox" style="float:left">
+                                @Html.DisplayFor(model => model.AgentTypeName, new { @class = "agenttxtbox", Title = "Agent Type" })
+                            </div>
+
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    @Html.Label("Agent Full Name")
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DisplayFor(model => model.AgentFullName, new { @class = "popuproletxtbox fulwdth", Title = "Agent Full Name" })
+                            </div>
+
+                        </div>
+                        <div class="fulwdth">
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            Agent Nick Name
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.AgentNickName, new { @class = "agenttxtbox", Title = "Agent Nick Name" })
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            @Html.Label("Gender")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.Gender, new { @class = "agenttxtbox", @id = "drp_gndr", Title = "Gender" })
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    Email
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DisplayFor(model => model.Email, new { @class = "popuproletxtbox1", Title = "Email" })
+                            </div>
+
+                        </div>
+                        <div class="fulwdth">
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            Mobile
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.Mobile, new { @class = "agenttxtbox", Title = "Mobile" })
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            Phone
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.Phone, new { @class = "agenttxtbox", Title = "Phone", style = "text-align:right;" })
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    Address
+
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @Html.DisplayFor(model => model.AddressLine1, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+                            </div>
+
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer address">
+                                <span style="color: #cf0808;">&nbsp;</span>
+                                <label>
+
+                                </label>
+                            </div>
+                            <div class="divTextbox address">
+                                @Html.DisplayFor(model => model.AddressLine2, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+                            </div>
+
+                        </div>
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer address">
+                                <span style="color: #cf0808;">&nbsp;</span>
+                                <label>
+
+                                </label>
+                            </div>
+                            <div class="divTextbox address">
+                                @Html.DisplayFor(model => model.AddressLine3, new { @class = "popuproletxtbox fulwdth", Title = "Address" })
+                            </div>
+
+                        </div>
+                        <div class="fulwdth">
+
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            @Html.Label("City")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.City, new { @class = "agenttxtbox", Title = "City" })
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            @Html.Label("State")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.State, new { @class = "agenttxtbox", Title = "State" })
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fulwdth">
+
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            @Html.Label("Country")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.Country, new { @class = "agenttxtbox", Title = "Country" })
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            Postal Code
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.PostalCD, new { @class = "agenttxtbox", Title = "Postal Code" })
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fulwdth">
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            Commission (%)
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.CommissionPercent, new { @class = "agenttxtbox", @id = "drp_gndr", Title = "Commission Precent" })
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            @Html.Label("License No")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.LicenseNo, new { @class = "popuproletxtbox fulwdth integertxt", Title = "License No" })
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fulwdth">
+                            <div id="duble_divi">
+                                <div class="divfieldrightrow">
+                                    <div class="popup_lbl_outer">
+
+                                        <label>
+                                            @Html.Label("Agency Name")
+                                        </label>
+                                    </div>
+                                    <div class="divTextbox">
+                                        @Html.DisplayFor(model => model.AgencyName, new { @class = "popuproletxtbox", Title = "Agency Name" })
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    @Html.Label("Blacklisted")
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @if (Model.IsBlackListed)
+                                {
+                                    <text>Yes</text>
+                                }
+                                else
+                                {
+                                    <text>No</text>
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+
+                                <label>
+                                    @Html.Label("Comments")
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                <p style="text-align:justify;align-content:initial">
+                                    @Model.Comments
+                                </p>
+
+                            </div>
+
+                        </div>
+                        @if (Model.AttachmentList != null && Model.AttachmentList.Count() > 0)
+                        {
+
+                            <div class="divfieldrightrow">
+                                <div class="bdr">
+                                    <div class="popup_lbl_outer">
+                                        <label>
+                                            <b>Documents</b>
+                                        </label>
+                                    </div>
+                                    <div id="uploadedFile">
+
+                                        @foreach (var item in Model.AttachmentList.ToList())
+                                        {
+
+                                            <ul>
+                                                <li><a href="@Url.Content(@item.DocumentName)" target=" _blank">@item.DocumentHead</a></li>
+
+                                            </ul>
+
+                                        }
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="column_divid" id="prop_lst1">
+
+                        <div class="divfieldrightrow">
+                            <div class="popup_lbl_outer">
+                                <label>
+                                    Agent Image
+                                </label>
+                            </div>
+                            <div class="divTextbox">
+                                @*@Html.DisplayFor(model => model.AgentImage, new { Title = "Agent Image", @class = "popuproletxtbox imageUpload fulwdth", type = "file", style = "padding:0px;" })*@
+                            </div>
+                        </div>
+
+                        <div style="height: 120px; padding-top: 50px;">
+                            <img src=@Url.Content(@image) class="popuproletxtbox" id="imagePrev1" />
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="divfieldrightrow" style="border-bottom: solid 1px #8cbfe7; color: grey; padding-top: 10px;">
+                        <div class="modified-info">
+                            <div>
+                                <ul class="user"><li>Created By:</li><li>@Html.DisplayFor(model => model.CreateName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Created By" })</li></ul>
+                                <ul class="date"><li>Created Date Time:</li><li>@Html.DisplayFor(model => model.CreatedDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" })  </li></ul>
+                            </div>
+                            <div>
+                                <ul class="user"><li>Modified By:</li><li> @Html.DisplayFor(model => model.ModifyName, new { style = "width:100px;", @disabled = "disabled", @readonly = "readonly", Title = "Modified By" }) </li></ul>
+                                <ul class="date"><li>Modified Date Time:</li><li>@Html.DisplayFor(model => model.ModifiedDate, new { style = "width:140px;", @disabled = "disabled", @readonly = "readonly", Title = "Created DateTime" }) </li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+</div>
+<script>
+    var newList = new Array();
+    newList['files'] = new Array();
+    newList['headerName'] = new Array();
+
+    $(document).ready(function () {
+        (function ($) {
+            $.fn.uploadAttach = function (action) {
+                var uploadCtrl = $(this);
+                var formData = new FormData();
+                if (action === "document") {
+                    $(this).change(function () {
+                        if ($("#txtHeaderAttach").val().trim() == "") {
+                            $("#fileHeaderError").fadeIn();
+                            $(uploadCtrl).val("");
+                            return;
+                        }
+                        else {
+                            $("#fileHeaderError").fadeOut();
+                        }
+                        var files = $(this).get(0).files;
+                        for (var i = 0; i < files.length; i++) {
+                            newList['files'].push(files.item(i));
+                            newList['headerName'].push($(uploadCtrl).val().trim());
+                        }
+                        populateGrid();
+                        $(uploadCtrl).val("");
+                        $(uploadCtrl).prev().val("");
+                        formData.append('files', newList);
+                    });
+                }
+                if (action === "image") {
+                    $(this).change(function () {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#imagePrev1').attr('src', e.target.result);
+                        };
+                        reader.onerror = function (event) {
+                            alert("File could not be read! Code " + event.target.error.code);
+                        };
+                        reader.readAsDataURL($(this).get(0).files[0]);
+                        $('#imagePrev1').css('display', 'none');
+                        $('#imagePrev1').fadeIn(2000);
+                    });
+                }
+                function populateGrid() {
+                    var textFile = "";
+                    for (var j = 0; j < newList['files'].length; j++) {
+                        textFile += "<ul><li class='fileHeade'>" + newList['files'][j].name + "</li><li class='fileName'>" + newList['headerName'][j] + "</li><li class='removefile' data-index='" + j + "'>Remove</li></ul>";
+                    }
+                    $("#uploadedFile1").html('');
+                    $("#uploadedFile1").append(textFile);
+                    $('.removefile').click(function () {
+                        newList['files'].splice($(this).data('index'), 1);
+                        newList['headerName'].splice($(this).data('index'), 1);
+                        populateGrid();
+                    })
+                }
+
+                $("#btn_Submit").unbind().click(function () {
+                    if ($("#agent_detail_form form").valid()) {
+                        $("#loader").show();
+                        var update = '@Url.Action("Update")';
+                        var create = '@Url.Action("Create")';
+                        var URL = '';
+                        if ($(".create_or_update").val() == "" || $(".create_or_update").val() == "0") {
+                            URL = create;
+                        }
+                        else {
+                            URL = update;
+                        }
+
+                        var model = $("#agent_detail_form form").serializeArray();
+                        var fd = new FormData();
+                        if ($("#AgentImage").get(0).files.length > 0) {
+                            fd.append('AgentImage', $("#AgentImage").get(0).files[0]);
+                        }
+                        $.each(model, function (key, input) {
+                            fd.append(input.name, input.value);
+                        });
+
+                        for (var k = 0; k < newList['files'].length; k++) {
+                            fd.append('attachFiles' + k, newList['files'][k]);
+
+                        }
+                        $.ajax({
+                            url: URL,
+                            type: "post",
+                            dataType: 'json',
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            error: function (data) {
+                                $("#loader").hide();
+                                alert("Some Error Occured Please Reload the page.")
+
+                            },
+                            success: function (data) {
+                                if (data.status == 1) {
+                                    alert("Success")
+                                    window.location.reload();
+                                }
+                                else {
+                                    $("#loader").hide();
+                                    $("#document_detail_form").html(data.responseText);
+                                }
+
+                            }
+                        })
+                    }
+                })
+
+            };
+
+        }(jQuery));
+
+
+        $(".fileDocuments").uploadAttach("document");
+        $(".imageUpload").uploadAttach("image");
+
+        showdatetimepicker(".datepicker", "no", "maxdate");
+        $("#btnUserClear").click(function () {
+            $(':input', "#agent_detail_form form")
+        .not(':button, :submit, :reset, :hidden')
+        .val('')
+        .removeAttr('checked')
+        .removeAttr('selected');
+        })
+
+        //Delete Attachment
+        $("#attach_grid #Delete_attach").click(function (e) {
+            e.preventDefault();
+
+            if (confirm('Do you wish to delete this')) {
+
+                var URL = $(this).attr("data-url");
+                var tt = $(this).parents('tr');
+
+                $.ajax({
+                    url: URL,
+                    type: "post",
+                    dataType: 'json',
+                    data: '',
+                    error: function (data) {
+
+                        alert("Some Error Occured Please Reload the page.")
+
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            tt.fadeOut();
+                        }
+                        else {
+
+                        }
+
+                    }
+                })
+
+            }
+        });
+
+        //Delete End
+    })
+</script>
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/validatedate")
+
+
